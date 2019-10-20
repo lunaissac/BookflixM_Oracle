@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.9.0.final using JasperReports Library version 6.9.0-cb8f9004be492ccc537180b49c026951f4220bf3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Prestamos" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="fd88e998-e55f-495e-88be-ac242129858e">
+	<property name="com.jaspersoft.studio.data.sql.tables">
+		<![CDATA[IlZXX1BSRVNUQU1PIiAsMTUsMTUsZDRjMjk3M2YtNjgzNy00Zjk4LWE3YzEtMDc0MTJjNzRlMmY2
+Ow==]]>
+	</property>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ORACLE"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT *
+FROM "VW_PRESTAMO"]]>
+	</queryString>
+	<field name="Nº" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="Nº"/>
+	</field>
+	<field name="BIBLIOTECARIO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="BIBLIOTECARIO"/>
+	</field>
+	<field name="LECTOR" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="LECTOR"/>
+	</field>
+	<field name="LIBRO" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="LIBRO"/>
+	</field>
+	<field name="CANTDET" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="CANTDET"/>
+	</field>
+	<field name="FSALPRES" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="FSALPRES"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="185" y="4" width="420" height="60" uuid="a22cf5ad-6076-4f50-80be-b6ecd069134f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="36" isBold="true"/>
+				</textElement>
+				<text><![CDATA[REPORTE PRESTAMOS]]></text>
+			</staticText>
+			<image>
+				<reportElement x="26" y="16" width="56" height="48" uuid="25de17a3-72fc-44ef-a9eb-9ad127e57e38"/>
+				<imageExpression><![CDATA["insignia.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="21" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="-1" width="801" height="21" forecolor="#BDF3FC" backcolor="#BDF3FC" uuid="6e3f714e-5aea-4e2a-b4f6-5b25735c6373"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="-1" width="40" height="20" uuid="68544257-e4f8-43d2-ad5d-37ccbe45fdee"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[N°]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="42" y="-1" width="188" height="20" uuid="a2a82c3f-d5cb-4815-8722-5becd3375440"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[BIBLIOTECARIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="234" y="-1" width="187" height="20" uuid="e902149a-cdca-4450-aefa-e00875acbb08"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[LECTOR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="425" y="-1" width="195" height="20" uuid="2b55d706-6831-47a8-ae7e-f7837237babb"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[LIBRO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="626" y="-1" width="60" height="20" uuid="324d138e-05ab-4071-84c9-af6643deb6d6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[CANTIDAD]]></text>
+			</staticText>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="19" width="801" height="1" uuid="61cea149-e303-430f-a471-380f4b3c4a1a"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="690" y="-1" width="110" height="20" uuid="0b0a675f-55a5-447c-9069-daa7909b40f1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[F. SALIDA]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="40" height="20" uuid="142e399d-5c80-4d53-ae7b-4dd6a199e845">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="0ef500ae-1d4c-4574-a2f8-5cafb9fde333"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Nº}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="42" y="0" width="188" height="20" uuid="4e590851-fb31-4a85-b8fc-1e2df2771596">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="f6c37dc1-33d3-4e36-aea7-695f4f611072"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{BIBLIOTECARIO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="234" y="0" width="187" height="20" uuid="1329f589-142f-4ebb-a83a-39ee7495c1ba">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="95b81495-fcab-4460-9661-542e89bfbb0c"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{LECTOR}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="425" y="0" width="195" height="20" uuid="303fef05-fe32-454c-9370-bb25c2a0ae08">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="bd7c5b0c-a228-4427-ba3e-99551bd1f85e"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{LIBRO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="626" y="0" width="60" height="20" uuid="317eb9f6-3a98-4a78-942d-64885dbe21b7">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="cfffbc4e-a839-4e8d-9a7d-f3cef62aa3cc"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{CANTDET}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="690" y="0" width="110" height="20" uuid="c69b941a-77b0-4471-969e-1c602a0d8144">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="e4c3bca9-fc32-4243-b108-00b111a13906"/>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{FSALPRES}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="20" width="801" height="1" forecolor="#000000" uuid="e4533077-f922-4fdd-8502-e5d8d90bbe30"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="29" splitType="Stretch">
+			<frame>
+				<reportElement mode="Opaque" x="-20" y="8" width="841" height="21" forecolor="#BDF3FC" backcolor="#BDF3FC" uuid="786b172e-1cff-4991-888a-f1be1ae39c84"/>
+				<textField pattern="EEEEE dd MMMMM yyyy">
+					<reportElement x="19" y="0" width="197" height="20" forecolor="#000000" uuid="29a7ed49-4ec2-4a1c-b105-da7e506ca0b3"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="9" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="701" y="-1" width="80" height="20" forecolor="#000000" uuid="4fa2b295-957a-4df1-87c1-049a1b879b72"/>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font fontName="SansSerif" size="9" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Pagina "+$V{PAGE_NUMBER}+" de"]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report">
+					<reportElement x="781" y="-1" width="40" height="20" forecolor="#000000" uuid="0c9ee219-b07f-4ef2-b3fb-60308fa224f4"/>
+					<textElement verticalAlignment="Middle">
+						<font fontName="SansSerif" size="9" isBold="false"/>
+					</textElement>
+					<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				</textField>
+			</frame>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="0" width="801" height="1" forecolor="#000000" uuid="5836dbcc-eb3d-489e-93f1-745f547f2769"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

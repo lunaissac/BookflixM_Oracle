@@ -1,0 +1,155 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../Template/TemplateMenu.xhtml">
+
+            <ui:define name="content">
+                <h1 style="margin-top: 0;margin-bottom: 0;text-align-last: center;">REGISTRO DEVOLUCIONES</h1>
+                <center>
+
+                    <p:growl  showDetail="true" id="messages"/>
+                    <h:form id="form">
+                        <p:dataTable value="#{devolucionC.listadoDevolucion}" 
+                                     var="lista" 
+                                     id="dtTable"
+                                     paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                     paginator="true" 
+                                     rows="10" 
+                                     style="margin-bottom:20px"
+                                     emptyMessage="No hay Registro que mostrar"
+                                     reflow="true">
+
+                            <f:facet name="header">
+                                <h:commandLink id="REP" title="Descargar Reporte" style="float:right;width: 50px" actionListener="#{devolucionC.reporteDevolucion()}">
+                                    <p:graphicImage url="../resources/images/pdf_1.jpg" width="40"/>
+                                    <p:dataExporter type="pdf" target="dtTable" fileName="Reporte_Devolucion"/>
+                                    <p:tooltip trackMouse="true"/>
+                                </h:commandLink>
+                                <p:tooltip for="REP" value="Descargar Reporte"
+                                           showEffect="clip" hideEffect="size" position="left"/>
+                            </f:facet> 
+
+                            <p:column headerText="LECTOR">
+                                <center>
+                                    <h:outputText value="#{lista.LECTOR}" />
+                                </center>
+                            </p:column>
+                            <p:column headerText="LIBRO">
+                                <center>
+                                    <h:outputText value="#{lista.LIBRO}" />
+                                </center>
+                            </p:column>
+                            <p:column headerText="CANTIDAD" >
+                                <center>
+                                    <h:outputText value="#{lista.CANTDET}" />
+                                </center>
+                            </p:column>
+                            <p:column headerText="FECHA" >
+                                <center>
+                                    <h:outputText value="#{lista.FECHENT}"/>
+                                </center>
+                            </p:column>
+                            <!-- Devolver -->
+                            <p:column headerText="ACCIONES" width="150">
+                                <center>
+                                    <p:commandButton value="Devolver" icon="ui-icon-pencil" style="background: #63c9f1;"
+                                                     oncomplete="PF('wdlgDatos').show();" update="" id="grow">
+                                        <f:setPropertyActionListener value="#{lista}" target="#{devolucionC.devolucion}"/>             
+
+                                    </p:commandButton>
+                                    <p:tooltip id="toolTipGrow" for="grow" value="DEVOLVER"
+                                               showEffect="clip" hideEffect="explode" position="left"/>
+                                </center>
+                            </p:column> 
+
+                            <!--                            <f:facet name="footer">
+                                                            EN TOTAL HAY {fn:length(devolucionC.listadoDevolucion)} REGISTROS.
+                                                        </f:facet>-->
+                        </p:dataTable>
+                    </h:form>
+
+                    <p:dialog showEffect="explode" modal="true" hideEffect="explode" header="CANTIDAD DE LIBROS"
+                              id="dlgDatos" widgetVar="wdlgDatos" >
+                        <h:form>
+                            <p:panelGrid columns="2"
+                                         styleClass="ui-panelgrid-blank ui-fluid"
+                                         columnClasses="ui-md-2 ui-md-4">
+                                <p:outputLabel value="CANTIDAD"/>
+                                <p:inputText value="#{devolucionC.devolucion.CANTDET}"
+                                             required="true"
+                                             requiredMessage="Ingrese cantidad"
+                                             maxlength="3"
+                                             onkeypress="return justNumbers(event);">
+                                    <p:keyFilter regEx="/[0-9_]/i"/>
+                                </p:inputText>       
+                            </p:panelGrid>
+                            <p:spacer/>
+                            <center>
+                                <p:commandButton value="Devolver" 
+                                                 icon="ui-icon-check"
+                                                 actionListener="#{devolucionC.registrar()}"
+                                                 update="form" 
+                                                 oncomplete="if (args &amp;&amp; !args.validationFailed)PF('wdlgDatos').hide();">
+                                    <p:confirm header="Confirmación" 
+                                               message="¿Deseas Devolver?" 
+                                               icon="ui-icon-alert" />
+                                    <p:tooltip trackMouse="true"/>
+                                </p:commandButton>
+                                <p:commandButton value="Cancelar" 
+                                                 icon="ui-icon-close"
+                                                 immediate="true" 
+                                                 styleClass="black-btn"
+                                                 oncomplete="if (args &amp;&amp; !args.validationFailed)PF('wdlgDatos').hide();"/>
+                            </center>
+                        </h:form>
+                    </p:dialog>
+
+
+                    <h:form>
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <center>
+                                <p:commandButton value="Si"
+                                                 style="background: #FFC107"
+                                                 type="button" 
+                                                 styleClass="ui-confirmdialog-yes" 
+                                                 icon="ui-icon-check" >
+                                </p:commandButton>
+                                <p:commandButton value="No" 
+                                                 style="background: #00BCD4"
+                                                 type="button" 
+                                                 styleClass="ui-confirmdialog-no" 
+                                                 icon="ui-icon-close" />
+                            </center>
+                        </p:confirmDialog>
+                    </h:form>
+                </center> 
+                <h:form>
+                    <p:ajaxStatus onstart="PF('EstadoDialogo').show()" 
+                                  onsuccess="PF('EstadoDialogo').hide()"/>
+                    <p:dialog style="background-image: none;
+                              background-color: transparent ;
+                              border-color: transparent" widgetVar="EstadoDialogo" 
+                              modal="true" 
+                              draggable="false" 
+                              closable="false" 
+                              resizable="false" 
+                              showHeader="false">
+                        <center>
+                            <p:graphicImage name="/images/login/Carga2.gif"  
+                                            style="display:block;" width="50%" height="50%"/>
+                        </center>
+                    </p:dialog>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

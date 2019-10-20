@@ -1,0 +1,300 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../Template/TemplateMenu.xhtml">
+
+            <ui:define name="content">
+                <div class="panel-heading">
+                    <center>
+                        <h1 style="margin-top: 0;margin-bottom: 0; text-align-last: center">REGISTRO DE PRESTAMOS</h1>
+                    </center>
+                </div>
+                <center>
+                    <p:growl  showDetail="true"/>
+                    <p:tabView dynamic="true" cache="true" effect="fold" >
+                        <p:tab title="REALIZAR PRESTAMO" titleStyle="" >
+                            <p:growl  showDetail="true"/>
+                            <h:form id="Libro">
+                                <h4 style="margin-top: 10;text-align-last: left;margin-bottom: 0;">DATOS DEL LECTOR</h4>
+                                <p:panelGrid columns="1" id="Alumno" styleClass="ui-panelgrid-blank ui-fluid" layout="grid">                                    
+                                    <p:outputLabel for="lector" value="BUSCAR LECTOR :" />
+                                    <p:selectOneMenu id="lector" 
+                                                     value="#{prestamoC.prestamo.CODLECT}" 
+                                                     style="width:30%;text-align-last: center;" 
+                                                     panelStyle="width:18%"
+                                                     effect="fold"
+                                                     required="true"
+                                                     requiredMessage="Seleccione al Lector"
+                                                     editable="false" filter="true" 
+                                                     filterMatchMode="startsWith" rendered="true">
+                                        <f:selectItem itemLabel="- - - - - - - - Seleccione Lector - - - - - - - -" 
+                                                      itemValue="#{null}" />
+                                        <f:selectItems value="#{personaC.listadoLector}" 
+                                                       var="txtLector" 
+                                                       itemLabel="#{txtLector.NOMPER}  #{txtLector.APEPER}" 
+                                                       itemValue="#{txtLector.CODPER}"  />
+                                        <p:ajax listener="#{prestamoC.buscarLector()}"
+                                                process="Libro:lector" 
+                                                update="DAlumnos"/>
+                                    </p:selectOneMenu> 
+                                </p:panelGrid> 
+
+                                <p:panelGrid id="DAlumnos" columns="4" styleClass="panelGridCenter ui-panelgrid-blank ui-fluid" layout="grid">
+                                    <p:panelGrid columns="1" layout="grid">
+                                        <h:outputText value="DNI" style="font-weight: bold;text-align: center;color: #03A9F4;"/>
+                                        <h:outputText value="#{prestamoC.miLector.DNIPER}"/>
+                                    </p:panelGrid>
+                                    <p:panelGrid columns="1" layout="grid">
+                                        <h:outputText value="GRADO" style="font-weight: bold;text-align: center;color: #03A9F4;"/>
+                                        <h:outputText value="#{prestamoC.miLector.GRADAUL}"/>
+                                    </p:panelGrid>
+                                    <p:panelGrid columns="1" layout="grid">
+                                        <h:outputText value="SECCIÓN" style="font-weight: bold;text-align: center;color: #03A9F4;"/>
+                                        <h:outputText value="#{prestamoC.miLector.SECCAUL}" />
+                                    </p:panelGrid>
+                                    <p:panelGrid columns="1" layout="grid">
+                                        <h:outputText value="SECTOR" style="font-weight: bold;text-align: center;color: #03A9F4;"/>
+                                        <h:outputText value="Mayor" rendered="#{prestamoC.miLector.SECTAUL eq 'M'}"/>
+                                        <h:outputText value="Menor" rendered="#{prestamoC.miLector.SECTAUL eq 'N'}"/>
+                                    </p:panelGrid>
+
+                                </p:panelGrid>
+
+                                <p:separator />
+
+                                <h4 style="margin-top: 10;text-align-last: left">DATOS DEL LIBRO</h4>
+                                <style>
+                                    .ui-selectonemenu-filter-container{
+                                        width: 97%;
+                                    }
+                                    .panelGridCenter td,.panelGridCenter tr {
+                                        text-align: center;
+                                    }
+                                </style>
+
+                                <p:panelGrid id="Libro" columns="1" layout="grid" styleClass="ui-panelgrid-blank ui-fluid">
+                                    <p:outputLabel value="BUSCAR LIBRO :" style="font-weight:bold;text-align: center;font-size: 20px;"/>
+                                    <p:selectOneMenu id="libro" 
+                                                     editable="false"
+                                                     panelStyle="width:60%"
+                                                     value="#{prestamoC.prestamo.CODLIB}" 
+                                                     style="width: 80%;text-align-last: center"
+                                                     effect="fold"  
+                                                     filter="true"
+                                                     filterMatchMode="startsWith" 
+                                                     required="true" 
+                                                     requiredMessage="Ingrese Libro">
+                                        <f:selectItem itemLabel="- - - - - - - - - - - Seleccione Libro - - - - - - - - - - -" 
+                                                      itemValue="#{null}" />
+                                        <f:selectItems value="#{libroC.listadoLib}" 
+                                                       var="libro" 
+                                                       itemLabel="#{libro.TITLIB}" 
+                                                       itemValue="#{libro.CODLIB}" />
+                                        <p:ajax listener="#{prestamoC.buscarLibro()}"
+                                                process="Libro:libro" 
+                                                update="DLibro"/>
+                                    </p:selectOneMenu>
+                                </p:panelGrid>
+                                <p:spacer/>
+
+                                <p:panelGrid  columns="4" id="DLibro" styleClass="panelGridCenter ui-panelgrid-blank ui-fluid" layout="grid">
+
+                                    <p:panelGrid columns="1" layout="grid">
+                                        <h:outputText value="ESTADO" style="font-weight: bold;text-align: center;color: #03A9F4;"/>
+                                        <h:outputText value="Bueno" rendered="#{prestamoC.milibro.ESTLIB eq 'B'}"/>
+                                        <h:outputText value="Malo" rendered="#{prestamoC.milibro.ESTLIB eq 'M'}"/>
+                                        <h:outputText value="Regular" rendered="#{prestamoC.milibro.ESTLIB eq 'R'}"/>
+                                    </p:panelGrid>
+                                    <p:panelGrid columns="1" layout="grid">
+                                        <h:outputText value="CANTIDAD" style="font-weight: bold;text-align: center;color: #03A9F4;"/>
+                                        <h:outputText value="#{prestamoC.milibro.CANTLIB}"/>
+                                    </p:panelGrid>
+                                    <p:panelGrid columns="1" layout="grid">
+                                        <h:outputText value="CATEGORIA" style="font-weight: bold;text-align: center;color: #03A9F4;"/>
+                                        <h:outputText value="#{prestamoC.milibro.CODCAT}" />
+                                    </p:panelGrid>
+                                    <p:panelGrid columns="1" layout="grid">
+                                        <h:outputText value="UBICACIÓN" style="font-weight: bold;text-align: center;color: #03A9F4;"/>
+                                        <h:outputText value="#{prestamoC.milibro.DIRUBILIB}" />
+                                    </p:panelGrid>
+                                </p:panelGrid>
+
+                                <p:separator />
+
+                                <p:panelGrid style="margin-top: 10px;margin-bottom: 10px;"> 
+                                    <p:outputLabel value="CANTIDAD :"/>
+                                    <p:inputText value="#{prestamoC.prestamo.CANTFAL}" 
+                                                 required="true" 
+                                                 requiredMessage="Ingrese Cantidad"
+                                                 onkeypress="return justNumbers(event);"
+                                                 maxlength="4">
+                                        <p:keyFilter regEx="/[0-9_]/i"/>
+                                    </p:inputText>
+                                </p:panelGrid>                                 
+
+                                <p:separator />
+
+                                <p:commandButton id="uno" 
+                                                 icon="ui-icon-pencil" 
+                                                 value="Registrar" 
+                                                 actionListener="#{prestamoC.registrarPrestamo()}" 
+                                                 update="@(form:formulario)"
+                                                 style="margin-top: 10px;  ">
+                                    <p:ajax disabled="true"  rendered="dtTable"/>
+                                </p:commandButton>
+                                <p:commandButton icon="ui-icon-trash" 
+                                                 value="Limpiar" 
+                                                 actionListener="#{prestamoC.clean()}" 
+                                                 process="@this" 
+                                                 update="Alumno,Libro"
+                                                 styleClass="black-btn"/>
+
+
+                                <br/>
+                                <br/>                            
+
+                            </h:form>                  
+                        </p:tab>
+
+
+                        <p:tab id="Listado" title="VER REGISTROS">
+
+                            <h:form id="formulario">
+                                <p:dataTable value="#{prestamoC.listadopres}" 
+                                             var="lista" 
+                                             id="dtTable" 
+                                             reflow="true"
+                                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                             paginator="true" 
+                                             rows="10"
+                                             emptyMessage="No hay registros para mostrar"
+                                             style="margin-bottom:20px" 
+                                             >
+
+                                    <f:facet name="header">
+                                        <h:commandLink id="REP" title="Descargar Reporte" style="float:right;width: 30px"
+                                                       actionListener="#{prestamoC.reportePrestamo()}">
+                                            <p:graphicImage url="../resources/images/pdf_1.png" width="36"/>
+                                            <p:dataExporter type="pdf" target="dtTable" fileName="Reporte_Prestamos"/>
+                                            <p:tooltip trackMouse="true"/>
+                                        </h:commandLink>
+                                        <p:tooltip for="REP" value="Descargar Reporte"
+                                                   showEffect="clip" hideEffect="size" position="left"/>
+                                    </f:facet> 
+
+                                    <p:column headerText="BIBLIOTECARIO :" >
+                                        <center>
+                                            <h:outputText value="#{lista.CODBIBL}" />
+                                        </center>
+                                    </p:column>
+                                    <p:column headerText="LECTOR :" >
+                                        <center>
+                                            <h:outputText value="#{lista.CODLECT}" />
+                                        </center>
+                                    </p:column>
+                                    <p:column headerText="LIBRO :" >
+                                        <center>
+                                            <h:outputText value="#{lista.NAMELIBRO}" />
+                                        </center>
+                                    </p:column>
+                                    <p:column headerText="CANT :" >
+                                        <center>
+                                            <h:outputText value="#{lista.CANTFAL}" />
+                                        </center>
+                                    </p:column>
+                                    <p:column headerText="F. SALIDA :" >
+                                        <center>
+                                            <h:outputText value="#{lista.FSALPRES}" />
+                                        </center>
+                                    </p:column>
+                                    <p:column headerText="F. ENTREGA :" >
+                                        <center>
+                                            <h:outputText value="#{lista.FENTPRES}" />
+                                        </center>
+                                    </p:column>
+
+                                    <!--                                    <p:column headerText="LIBRO :">
+                                                                            <center>
+                                                                                <h:outputText value="{lista.CODLIB}" />
+                                                                            </center>
+                                                                        </p:column>-->
+                                    <!--                                    <f:facet name="footer">
+                                                                            EN TOTAL HAY {fn:length(prestamoC.listadopres)} REGISTROS.
+                                                                        </f:facet>-->
+                                </p:dataTable>
+                            </h:form>
+                        </p:tab>
+                    </p:tabView>
+
+
+                    <br />
+                    <br />
+
+                    <p:growl  showDetail="true" id="messages" />
+                    <h:form id="forma">
+
+                    </h:form>
+                    <p:dialog showEffect="explode" modal="true" hideEffect="explode"
+                              id="dlgDatos" widgetVar="wdlgDatos" >
+                        <h:form>
+                            <p:panelGrid columns="4" >
+                                <p:outputLabel value="BIBLIOTECARIO :"/> <p:autoComplete value="#{prestamoC.prestamo.CODBIBL}" completeMethod="#{prestamoC.completeTextBibliotecario}" required="true" requiredMessage="Ingrese Bibliotecario"/>
+                                <p:outputLabel value="LECTOR :"/> <p:autoComplete value="#{prestamoC.prestamo.CODLECT}" completeMethod="#{prestamoC.completeTextLector}" required="true" requiredMessage="Ingrese Lector"/>                
+                                <p:outputLabel value="FECHA DE SALIDA :" />
+                                <p:calendar id="calendar1" value="#{prestamoC.prestamo.FSALPRES}" mask="true" pattern="yyyy-MM-dd" required="true" 
+                                            requiredMessage="Requiere Fecha de Salida" navigator="true" locale="es"/>               
+                                <p:outputLabel value="FECHA DE ENTREGA :" />
+                                <p:calendar id="calendar2" value="#{prestamoC.prestamo.FENTPRES}" mask="true" pattern="yyyy-MM-dd" required="true" 
+                                            requiredMessage="Requiere Fecha de Entrega"  navigator="true" locale="es" />
+                            </p:panelGrid>
+
+                            <center>
+                                <p:commandButton value="Actualizar" actionListener="#{prestamoC.modificar()}"
+                                                 update=":forma :messages" oncomplete="if (args &amp;&amp; !args.validationFailed)PF('wdlgDatos').hide();">
+                                    <p:confirm header="Confirmación" message="¿Deseas Modificar? " icon="ui-icon-alert" />
+                                    <p:tooltip trackMouse="true"/>
+                                </p:commandButton>
+                                <p:commandButton value="Cancelar" immediate="true" oncomplete="PF('wdlgDatos').hide();"/>
+                            </center>
+                        </h:form>
+                    </p:dialog>
+                    <h:form>
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Si" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                        </p:confirmDialog>
+                    </h:form>
+                </center>
+
+
+                <h:form>
+                    <p:ajaxStatus onstart="PF('EstadoDialogo').show()" 
+                                  onsuccess="PF('EstadoDialogo').hide()" />
+                    <p:dialog style="background-image: none;
+                              background-color: transparent ;
+                              border-color: transparent" 
+                              widgetVar="EstadoDialogo" 
+                              modal="true" 
+                              draggable="false" 
+                              closable="false" 
+                              resizable="false" 
+                              showHeader="false">
+                        <center>
+                            <p:graphicImage name="/images/login/Carga2.gif"  
+                                            style="display:block;" width="50%" height="50%"/>
+                        </center>
+                    </p:dialog>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

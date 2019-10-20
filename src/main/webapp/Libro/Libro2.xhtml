@@ -1,0 +1,106 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <body>
+
+        <ui:composition template="./../Template/TemplateMenu.xhtml">
+
+            <ui:define name="content">
+                <f:metadata>
+                    <f:event type="preRenderView" listener="#{libroC.listar()}"/>
+                </f:metadata>
+                <center>
+
+                    <p:growl showDetail="true" id="messages" life="1000"/>
+
+
+                    <p:spacer/>
+                    <h:form id="form">
+                        <p:dataTable value="#{libroC.listadoLib}" var="lista" 
+                                     id="dtTable"
+                                     paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                     paginator="true" 
+                                     rows="10" 
+                                     style="margin-bottom:20px" 
+                                     filteredValue="#{libroC.listadoFiltro}">
+
+                            <p:column style="width:40px" >
+                                <p:rowToggler/>
+                            </p:column>
+                            <p:rowExpansion>
+                                <center id="centro">
+                                    <style>
+                                        .panelGridCenter td,.panelGridCenter tr {
+                                            text-align: center;
+                                        }
+                                    </style>
+                                    <p:panelGrid  columns="4" styleClass="panelGridCenter">
+                                        <h:outputText  value="Cantidad" style="font-weight:bold;text-align: center;"/>
+                                        <h:outputText value="Año" style="font-weight:bold;text-align: center;"/>
+                                        <h:outputText value="Paginas" style="font-weight:bold;text-align: center;"/>
+                                        <h:outputText value="Descripción" style="font-weight:bold;text-align: center;"/>
+                                        <h:outputText value="#{lista.CANTLIB}"/>
+                                        <h:outputText value="#{lista.ANNLNZLIB}" />
+                                        <h:outputText value="#{lista.PAGLIB}" />
+                                        <h:outputText value="#{lista.DESCLIB}" />
+                                    </p:panelGrid>
+                                </center>
+                            </p:rowExpansion>              
+
+                            <p:column headerText="TITULO"  filterBy="#{lista.TITLIB}" filterMatchMode="contains">
+                                <center>
+                                    <h:outputText value="#{lista.TITLIB}" />
+                                </center>
+                            </p:column>            
+                            <p:column headerText="AUTOR" filterBy="#{lista.CODAUT}" filterMatchMode="contains" >
+                                <center>
+                                    <h:outputText value="#{lista.CODAUT}" />
+                                </center>
+                            </p:column>               
+                            <p:column headerText="CATEG." filterBy="#{lista.CODCAT}" filterMatchMode="contains" >
+                                <center>
+                                    <h:outputText value="#{lista.CODCAT}" />
+                                </center>
+                            </p:column>
+                            <p:column headerText="UBICACION" filterBy="#{lista.DIRUBILIB}" filterMatchMode="contains" >
+                                <center>
+                                    <h:outputText value="#{lista.DIRUBILIB}" />
+                                </center>
+                            </p:column>
+                            <p:column headerText="EDITORIAL" >
+                                <center>
+                                    <h:outputText value="#{lista.CODEDIT}" />
+                                </center>
+                            </p:column>
+                            <p:column headerText="FORMA INGRESO" >
+                                <center>
+                                    <h:outputText value="Donada" rendered="#{lista.FORINGLIB eq 'D'}"/>
+                                    <h:outputText value="Comprada" rendered="#{lista.FORINGLIB eq 'C'}"/>
+                                </center>
+                            </p:column>
+                            <p:column headerText="ESTADO" >
+                                <center>
+                                    <h:outputText value="Bueno" rendered="#{lista.ESTLIB eq 'B'}"/>
+                                    <h:outputText value="Malo" rendered="#{lista.ESTLIB eq 'M'}"/>
+                                    <h:outputText value="Regular" rendered="#{lista.ESTLIB eq 'R'}"/>
+                                </center>
+                            </p:column>
+
+                            <!--                            <f:facet name="footer">
+                                                            EN TOTAL HAY {fn:length(libroC.listadoLib)} REGISTROS.
+                                                        </f:facet>-->
+                        </p:dataTable>
+                    </h:form>
+
+                </center> 
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

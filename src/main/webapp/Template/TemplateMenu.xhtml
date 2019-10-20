@@ -1,0 +1,430 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="theme-color" content="#00acac" />
+
+
+        <h:outputStylesheet library="css" name="animate.css" />
+        <h:outputStylesheet library="css" name="charts.css" />
+        <h:outputStylesheet library="css" name="clock.css" />
+        <h:outputStylesheet library="css" name="components.css" />
+        <h:outputStylesheet library="css" name="fileupload.css" />
+        <h:outputStylesheet library="css" name="font-awesome.css" />
+        <h:outputStylesheet library="css" name="font-awesome.min.css" />
+        <h:outputStylesheet library="css" name="galleria.css" />
+        <h:outputStylesheet library="css" name="inputswitch.css" />
+        <h:outputStylesheet library="css" name="keyboard.css" />
+        <h:outputStylesheet library="css" name="layout-turquoise.css" />
+        <h:outputStylesheet library="css" name="nanoscroller.css" />
+        <h:outputStylesheet library="css" name="schedule.css" />
+        <h:outputStylesheet library="css" name="scrollpanel.css" />
+        <h:outputStylesheet library="css" name="theme.css" />
+
+
+        <h:outputScript library="jquery" name="jquery.js" />
+        <h:outputScript library="jquery" name="jquery-plugins.js" />
+
+        <h:outputScript library="js" name="charts.js" />
+        <h:outputScript library="js" name="clock.js" />
+        <h:outputScript library="js" name="components.js" />
+        <h:outputScript library="js" name="core.js" />
+        <h:outputScript library="js" name="fileupload.js" />
+        <h:outputScript library="js" name="galleria.js" />
+        <h:outputScript library="js" name="inputswitch.js" />
+        <h:outputScript library="js" name="keyboard.js" />
+        <h:outputScript library="js" name="layout.js" />
+        <h:outputScript library="js" name="moment.js" />
+        <h:outputScript library="js" name="nanoscroller.js" />
+        <h:outputScript library="js" name="raphael.js" />
+        <h:outputScript library="js" name="schedule.js" />
+        <h:outputScript library="js" name="scrollpanel.js" />
+        <h:outputScript library="js" name="swipe.js" />
+        <h:outputScript library="js" name="touchswipe.js" />
+        <h:outputScript library="js" name="Validaciones.js"/>
+
+
+        <title>Principal</title>
+        <style type="text/css">
+            .ui-steps .ui-steps-item {
+                width: 25%;
+            }
+        </style>
+    </h:head>
+
+    <h:body>
+        <f:metadata>
+            <f:event type="preRenderView" listener="#{pre_Dev_ChartJS.createBarModel2()}"/>
+            <f:event type="preRenderView" listener="#{año_libro_ChartJS.createLineModel()}"/>
+            <f:event type="preRenderView" listener="#{prestamo_devolucion_ChartJS.createPieModel()}"/>
+            <f:event type="preRenderView" listener="#{año_libroC.createBarModel()}"/>
+        </f:metadata>
+        <div class="layout-wrapper menu-layout-static ">
+
+            <!--            BARRA SUPERIOR-->
+
+            <ui:insert name="top">
+                <h:form class="topbar clearfix">
+                    <div class="topbar-left">            
+                        <div class="logo"></div>
+                    </div>
+
+                    <div class="topbar-right">
+                        <a id="menu-button" href="#">
+                            <i class="fa fa-angle-left"></i>
+                        </a>
+
+                        <a id="topbar-menu-button" href="#">
+                            <i class="fa fa-bars"></i>
+                        </a>
+                        <ul class="topbar-items fadeInDown animated">                                    
+                            <li class="profile-item"> 
+                                <a href="#">                            
+                                    <div class="profile-image"></div>
+                                    <span class="topbar-item-name">Jane Williams</span>
+                                </a>
+                                <ul class="poseidon-menu animated">
+<!--                                    <li role="menuitem">
+                                        <a href="#">
+                                            <i class="fa fa-fw fa-user"></i>
+                                            <span>Profile</span>
+                                        </a>
+                                    </li>-->
+                                    <li role="menuitem">
+                                        <a href="#">
+                                            <i class="fa fa-fw fa-key"></i>
+                                            <span>Cambiar Contraseña</span>
+                                        </a>
+                                    </li>
+                                    <li role="menuitem">
+                                        <h:commandLink actionListener="#{usuarioController.finishSession()}">
+                                            <i class="fa fa-fw fa-sign-out"></i>
+                                            <span>Cerrar Session</span>
+                                        </h:commandLink>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="topbar-icon fa fa-fw fa-cog"></i>
+                                    <span class="topbar-item-name">Settings</span>
+                                </a>
+                                <ul class="poseidon-menu animated">
+                                    <li role="menuitem">
+                                        <a href="#">
+                                            <i class="fa fa-fw fa-paint-brush"></i>
+                                            <span>Change Theme</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+<!--                            <li>
+                                <a href="#">
+                                    <i class="topbar-icon material-icons animated swing fa fa-fw fa-envelope-o"></i>
+                                    <span class="topbar-badge animated rubberBand">5</span>
+                                    <span class="topbar-item-name">Messages</span>
+                                </a>
+                                <ul class="poseidon-menu animated">
+                                    <li role="menuitem">
+                                        <a href="#" class="topbar-message">
+                                            <img id="j_idt14" src="../resources/images/avatar1.png" alt="" width="35" />
+                                            <span>Give me a call</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>-->
+                            <li>
+                                <a href="#">
+                                    <i class="topbar-icon material-icons fa fa-fw fa-bell-o"></i>
+                                    <span class="topbar-badge animated rubberBand">4</span>
+                                    <span class="topbar-item-name">Notifications</span>
+                                </a>
+                                <ul class="poseidon-menu animated">
+                                    <li role="menuitem">
+                                        <a href="#">
+                                            <i class="fa fa-fw fa-tasks"></i>
+                                            <span>Pending tasks</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </h:form>  
+            </ui:insert>
+
+            <!--            MENU IZQUIERDO-->
+
+            <ui:insert name="left">
+                <h:form id="menuform">
+                    <input type="hidden" name="menuform" value="menuform" />
+
+                    <div class="layout-menu-container">
+                        <div class="nano">
+                            <div class="nano-content menu-scroll-content">
+                                <div class="search-input">
+                                    <input type="text" placeholder="Search" value=" Hoy es : #{prestamoC.fechSistema}" />
+                                    <i class="fa fa-search"></i>
+                                </div>
+
+                                <h:panelGroup rendered="#{usuarioController.usuario.nivel=='B'}">
+                                    <ul id="menuform:j_idt25" class="layout-menu clearfix">
+                                        <li id="menuform:om_components" role="menuitem">
+                                            <li id="menuform:om_forms" role="menuitem">
+                                                <a href=".././Libro/Libro2.xhtml">
+                                                    <i class="fa fa-fw fa-book"></i>
+                                                    <span>Libros</span>
+                                                </a>
+                                            </li>
+                                            <li id="menuform:om_menus" role="menuitem">
+                                                <a href=".././Prestamo/Prestamo.xhtml">
+                                                    <i class="fa fa-fw fa-minus-square-o"></i>
+                                                    <span>Prestamos</span></a>
+                                            </li>
+                                            <li id="menuform:om_messages" role="menuitem">
+                                                <a href=".././Devolucion/Devolucion.xhtml">                                                        
+                                                    <i class="fa fa-fw fa-circle-o-notch"></i>
+                                                    <span>Devoluciones</span></a>
+                                            </li>
+                                            <li id="menuform:om_charts" role="menuitem">
+                                                <a href=".././Graficos/charts.xhtml">
+                                                    <i class="fa fa-fw fa-area-chart"></i>
+                                                    <span>Charts</span>
+                                                </a>
+                                            </li>
+                                        </li>
+                                    </ul>
+                                </h:panelGroup>
+
+                                <h:panelGroup rendered="#{usuarioController.usuario.nivel=='L'}">
+                                    <ul id="menuform:j_idt25" class="layout-menu clearfix">
+                                        <li id="menuform:om_forms" role="menuitem">
+                                            <a href=".././Libro/Libro2.xhtml">
+                                                <i class="fa fa-fw fa-book"></i>
+                                                <span>Libros</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </h:panelGroup>
+                                <h:panelGroup rendered="#{usuarioController.usuario.nivel=='A'}">
+                                    <ul id="menuform:j_idt25" class="layout-menu clearfix">
+                                        <li id="menuform:om_dashboard" role="menuitem">
+                                            <a href=".././Dashboard/DashboardP.xhtml">
+                                                <i class="fa fa-fw fa-home"></i>
+                                                <span>Dashboard</span>
+                                            </a>
+                                        </li>  
+                                        <li id="menuform:om_sample" role="menuitem">
+                                            <a href=".././Persona/Persona.xhtml">
+                                                <i class="fa fa-user"></i>
+                                                <span>Personas</span>
+                                            </a>
+                                        </li>
+                                        <li id="menuform:om_forms" role="menuitem">
+                                            <a href=".././Libro/Libro.xhtml">
+                                                <i class="fa fa-fw fa-book"></i>
+                                                <span>Libros</span>
+                                            </a>
+                                        </li>
+                                        <li id="menuform:om_data" role="menuitem">
+                                            <a href=".././Autor/Autor.xhtml">
+                                                <i class="fa fa-fw fa-paint-brush"></i>
+                                                <span>Autores</span>
+                                            </a>
+                                        </li>
+                                        <li id="menuform:om_panels" role="menuitem">
+                                            <a href=".././Categoria/Categorias.xhtml">
+                                                <i class="fa fa-fw fa-sitemap"></i>
+                                                <span>Categorias</span>
+                                            </a>
+                                        </li>
+                                        <li id="menuform:om_overlays" role="menuitem">
+                                            <a href=".././Editorial/Editorial.xhtml">
+                                                <i class="fa fa-fw fa-list-alt"></i>
+                                                <span>Editoriales</span>
+                                            </a>
+                                        </li>
+                                        <li id="menuform:om_menus" role="menuitem">
+                                            <a href=".././Prestamo/Prestamo.xhtml">
+                                                <i class="fa fa-fw fa-minus-square-o"></i>
+                                                <span>Prestamos</span></a>
+                                        </li>
+                                        <li id="menuform:om_messages" role="menuitem">
+                                            <a href=".././Devolucion/Devolucion.xhtml">
+                                                <i class="fa fa-fw fa-circle-o-notch"></i>
+                                                <span>Devoluciones</span></a>
+                                        </li>
+                                        <li id="menuform:om_charts" role="menuitem">
+                                            <a href=".././Graficos/charts.xhtml">
+                                                <i class="fa fa-fw fa-area-chart"></i>
+                                                <span>Charts</span>
+                                            </a>
+                                        </li> 
+
+                                        <li id="menuform:om_default" role="menuitem">
+                                            <a href="#" class="ripplelink">
+                                                <i class="fa fa-fw fa-life-saver"></i>
+                                                <span>Otros</span>
+                                                <span class="ink animate"></span>
+                                                <i class="fa fa-fw fa-angle-down menuitem-toggle-icon"></i>
+                                                <span class="menuitem-badge">2</span>
+                                            </a>
+                                            <ul role="menu">                                                
+                                                <li id="menuform:om_login" role="menuitem">
+                                                    <a href=".././Otros/Manual.xhtml">
+                                                        <i class="fa fa-fw fa-sign-in"></i>
+                                                        <span>Manual de Usuario</span>
+                                                    </a>
+                                                </li>
+                                                <li id="menuform:om_error" role="menuitem">
+                                                    <a href=".././Otros/Ayuda.xhtml">
+                                                        <i class="fa fa-fw fa-exclamation-circle"></i>
+                                                        <span>Ayuda</span>
+                                                    </a>
+                                                </li>                                               
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </h:panelGroup>  
+
+
+                                <script id="menuform:j_idt25_s" type="text/javascript">PrimeFaces.cw("Poseidon", "me", {id: "menuform:j_idt25"});</script>
+
+                            </div>
+                        </div>
+                    </div><input type="hidden" name="javax.faces.ViewState" id="j_id1:javax.faces.ViewState:0" value="2972244203569472522:-6250916005323902767" autocomplete="off" />
+                </h:form>
+
+            </ui:insert>
+
+            <!--            CONTENIDO PRINCIPAL-->
+
+            <div class="layout-main">
+                <div class="route-bar">                      
+                    <ui:insert name="content">
+                        <div class="ui-g dashboard">            
+                            <div class="ui-g-12 ui-md-6 ui-lg-3">
+                                <div class="ui-g card overview-box overview-box-1">
+                                    <div class="ui-g-4">
+                                        <i class="fa fa-users"></i>
+                                    </div>
+                                    <div class="ui-g-8">
+                                        <h:outputText class="overview-box-count" value="#{año_libroC.CLectores()}"/>
+                                        <span class="overview-box-name">Lectores</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui-g-12 ui-md-6 ui-lg-3">
+                                <div class="ui-g card overview-box overview-box-2">
+                                    <div class="ui-g-4">
+                                        <i class="fa fa-book"></i>
+                                    </div>
+                                    <div class="ui-g-8">
+                                        <h:outputText class="overview-box-count" value="#{año_libroC.CLibros()}"/>
+                                        <span class="overview-box-name">Libros</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui-g-12 ui-md-6 ui-lg-3">
+                                <div class="ui-g card overview-box overview-box-3">
+                                    <div class="ui-g-4">
+                                        <i class="fa fa-history"></i>
+                                    </div>
+                                    <div class="ui-g-8">
+                                        <h:outputText class="overview-box-count" value="#{año_libroC.CLibrosPendientes()}"/>
+                                        <span class="overview-box-name">Pendientes</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui-g-12 ui-md-6 ui-lg-3">
+                                <div class="ui-g card overview-box overview-box-4">
+                                    <div class="ui-g-4">
+                                        <i class="fa fa-check-square-o"></i>
+                                    </div>
+                                    <div class="ui-g-8">
+                                        <h:outputText class="overview-box-count" value="#{año_libroC.CDevoluciones()}"/>
+                                        <span class="overview-box-name">Devoluciones</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <h:panelGroup id="pnlGrAdmin" >  
+                            <div class="card">
+                                <!--                                                <p:chart type="bar" model="{mes_Pre_DevC.barModel}" 
+                                                                                         style="height:300px"
+                                                                                         responsive="true" 
+                                                                                         styleClass="jqplot-barRenderer-highlight-canvas">
+                                                                                    <p:autoUpdate />
+                                                                                </p:chart>-->
+
+                                <h:form>
+                                    <p:growl id="growl" showDetail="true" />
+
+                                    <p:barChart model="#{pre_Dev_ChartJS.barModel2}" 
+                                                style="width: 55%; height: auto;">
+                                        <p:ajax event="itemSelect" listener="#{pre_Dev_ChartJS.itemSelect}" update="growl"/>
+                                    </p:barChart>
+                                </h:form>
+                            </div>
+                            <div class="card">
+                                <div class="col-lg-12">
+                                    <!--                            <p:chart type="line" model="{año_libroC.lineModel2}"
+                                                                         rendered="{año_libroC.lineModel2 != null}"
+                                                                         style="width: auto;height:auto;" 
+                                                                         responsive="true"/>-->
+                                    <p:lineChart model="#{año_libro_ChartJS.lineModel}" 
+                                                 style="width: 55%; height: auto;" />
+                                </div>
+                            </div>                                     
+
+                            <div class="ui-g-12 ui-lg-6">
+                                <div class="card">
+                                    <h1 class="centerText">Prestamos - Devoluciones</h1>
+                                    <!--                            <p:chart type="pie" model="{prestamos_devolucionC.pieModel}"
+                                                                         rendered="{prestamos_devolucionC.pieModel != null}"
+                                                                         style="height: auto;width: auto"
+                                                                         responsive="true">
+                                                                    <p:autoUpdate id="uno"/>
+                                                                </p:chart>-->
+                                    <p:pieChart model="#{prestamo_devolucion_ChartJS.pieModel}" 
+                                                style="width: 45%; height: auto;"/>
+                                </div>
+                            </div>
+                            <div class="ui-g-12 ui-lg-6">
+                                <div class="card">
+                                    <h1 class="centerText">Lectores por Grado</h1>
+                                    <p:barChart model="#{año_libroC.barModel}" 
+                                                style="width: 40%; height: auto;"/>
+
+                                    <!--                            <p:chart type="pie" model="{libroC.pieModel}"
+                                                                         rendered="{libroC.pieModel != null}"
+                                                                         style="margin: 0 auto"
+                                                                         responsive="true"/>-->
+                                </div>
+                            </div>
+
+                        </h:panelGroup> 
+                    </ui:insert>
+                </div>
+                <div class="footer">
+                    <div class="card clearfix">
+                        <span class="footer-text-left">Team05 - BOOKFLIX</span>
+                        <span class="footer-text-right"><span class="ui-icon ui-icon-copyright"></span>  <span>Valle Grande - 2019</span></span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </h:body>
+
+</html>

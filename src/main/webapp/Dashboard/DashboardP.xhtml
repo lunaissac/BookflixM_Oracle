@@ -1,0 +1,104 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../Template/TemplateMenu.xhtml">
+            <ui:define name="content">
+                <f:metadata>
+                    <f:event type="preRenderView" listener="#{pre_Dev_ChartJS.createBarModel2()}"/>
+                    <f:event type="preRenderView" listener="#{año_libro_ChartJS.createLineModel()}"/>
+                    <f:event type="preRenderView" listener="#{prestamo_devolucion_ChartJS.createPieModel()}"/>
+                    <f:event type="preRenderView" listener="#{año_libroC.createBarModel()}"/>
+                </f:metadata>
+                <div class="ui-g dashboard">            
+                    <div class="ui-g-12 ui-md-6 ui-lg-3">
+                        <div class="ui-g card overview-box overview-box-1">
+                            <div class="ui-g-4">
+                                <i class="fa fa-users"></i>
+                            </div>
+                            <div class="ui-g-8">
+                                <h:outputText class="overview-box-count" value="#{año_libroC.CLectores()}"/>
+                                <span class="overview-box-name">Lectores</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-g-12 ui-md-6 ui-lg-3">
+                        <div class="ui-g card overview-box overview-box-2">
+                            <div class="ui-g-4">
+                                <i class="fa fa-book"></i>
+                            </div>
+                            <div class="ui-g-8">
+                                <h:outputText class="overview-box-count" value="#{año_libroC.CLibros()}"/>
+                                <span class="overview-box-name">Libros</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-g-12 ui-md-6 ui-lg-3">
+                        <div class="ui-g card overview-box overview-box-3">
+                            <div class="ui-g-4">
+                                <i class="fa fa-history"></i>
+                            </div>
+                            <div class="ui-g-8">
+                                <h:outputText class="overview-box-count" value="#{año_libroC.CLibrosPendientes()}"/>
+                                <span class="overview-box-name">Pendientes</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-g-12 ui-md-6 ui-lg-3">
+                        <div class="ui-g card overview-box overview-box-4">
+                            <div class="ui-g-4">
+                                <i class="fa fa-check-square-o"></i>
+                            </div>
+                            <div class="ui-g-8">
+                                <h:outputText class="overview-box-count" value="#{año_libroC.CDevoluciones()}"/>
+                                <span class="overview-box-name">Devoluciones</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <h:panelGroup id="pnlGrAdmin" >  
+                    <div class="card">
+                        <h:form>
+                            <p:growl id="growl" showDetail="true" />
+
+                            <p:barChart model="#{pre_Dev_ChartJS.barModel2}" 
+                                        style="width: 55%; height: auto;">
+                                <p:ajax event="itemSelect" listener="#{pre_Dev_ChartJS.itemSelect}" update="growl"/>
+                            </p:barChart>
+                        </h:form>
+                    </div>
+                    <div class="card">
+                        <div class="col-lg-12">
+                            <p:lineChart model="#{año_libro_ChartJS.lineModel}" 
+                                         style="width: 55%; height: auto;" />
+                        </div>
+                    </div>                                     
+
+                    <div class="ui-g-12 ui-lg-6">
+                        <div class="card">
+                            <h1 class="centerText">Prestamos - Devoluciones</h1>
+                            <p:pieChart model="#{prestamo_devolucion_ChartJS.pieModel}" 
+                                        style="width: 45%; height: auto;"/>
+                        </div>
+                    </div>
+                    <div class="ui-g-12 ui-lg-6">
+                        <div class="card">
+                            <h1 class="centerText">Lectores por Grado</h1>
+                            <p:barChart model="#{año_libroC.barModel}" 
+                                        style="width: 40%; height: auto;"/>
+                        </div>
+                    </div>
+                </h:panelGroup>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

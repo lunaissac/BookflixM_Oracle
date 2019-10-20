@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <h:outputStylesheet library="css" name="theme.css" />
+        <h:outputStylesheet library="css" name="font-awesome.css" />
+        <h:outputStylesheet library="css" name="components.css" />
+        <h:outputStylesheet library="css" name="layout-turquoise.css" />
+        <script src="../resources/js/Validaciones.js" type="text/javascript"></script>
+        <title>Recuperar Contraseña</title>
+    </h:head>
+    <h:body class="exception-body notfound-page">
+        <p:growl id="mnsj" showDetail="false"/>
+        <div class="exception-bottom">
+            <h:form id="Pass" styleClass="exception-wrapper">
+                <span class="exception-summary">ACTUALIZAR CONTRASEÑA</span>
+                <p:panelGrid columns="1" layout="grid" 
+                             id="Datos"
+                             styleClass="ui-panelgrid-blank ui-fluid" 
+                             style="margin-top: 15%;">                   
+                    <p:outputLabel value="Nombre de Usuario" style="color: white"/>
+                    <p:inputText value="#{personaC.persona.USUPER}" size="40"
+                                 onkeyup="noespacios(this)"
+                                 required="true"
+                                 requiredMessage="Ingrese Usuario"
+                                 onkeypress="return validarTextoNumero(event);"/>
+                    <p:outputLabel value="DNI" style="color: white"/>
+                    <p:inputText value="#{personaC.persona.DNIPER}" size="40"
+                                 onkeypress="return justNumbers(event);"
+                                 required="true"
+                                 requiredMessage="Ingrese sus DNI"
+                                 maxlength="8"/>
+                    <p:spacer/>
+                    <h:outputLabel for="pwd1" value="Nueva Contraseña *" style="color: white"/>
+                    <p:password id="pwd1" value="#{personaC.persona.PASSPER}" 
+                                match="pwd2" label="Password 1"  
+                                size="40"
+                                validatorMessage="Las contraseñas no coinciden" 
+                                required="true"
+                                requiredMessage="Ingrese Nueva Contraseña"/>
+                    
+                    <h:outputLabel for="pwd2" value="Repita Contraseña *" style="color: white"/>
+                    <p:password id="pwd2" value="#{personaC.persona.PASSPER}" 
+                                label="Password 2"  size="40"
+                                required="true"
+                                requiredMessage="Repita su Contraseña"/>
+                    <p:spacer/>
+                    <p:panelGrid columns="2" layout="grid">
+                        <p:commandButton value="Cambiar"
+                                         icon="ui-icon-refresh"
+                                         styleClass="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only ui-state-hover"
+                                         style="background-color: #FF9800"
+                                         actionListener="#{personaC.updatePass()}"
+                                         update="mnsj,Datos"/>    
+                        <button id="j_idt15" name="j_idt15" type="button" 
+                                class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-icon-left pink-btn" 
+                                onclick="window.open('\/BookflixM/faces\/index.xhtml', '_self')">
+                            <span class="ui-button-icon-left ui-icon ui-c fa fa-user"></span>
+                            <span class="ui-button-text ui-c">Ir a Login</span>
+                        </button>
+                    </p:panelGrid>
+                </p:panelGrid>
+            </h:form>
+        </div> 
+    </h:body>
+</html>
+

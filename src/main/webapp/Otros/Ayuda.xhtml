@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./../Template/TemplateMenu.xhtml">
+
+            <ui:define name="content">
+                <h:form>
+                    <p:fieldset legend="Marcos Alarcon Hermosa" 
+                                style="margin-bottom:20px;margin-top: 20px;" 
+                                toggleable="true" toggleSpeed="500">
+                        <h:panelGrid columns="2" cellpadding="10" columnClasses="firstColumn,secondColumn">
+                            <p:graphicImage name="/images/developer2.png"  width="100%"/>
+                            <h:panelGrid columns="1" cellpadding="1">
+                               <h:outputText value="Carrera Profesional :" style="font-weight: bold;"/>
+                                <h:outputText value="Analisis de Sistemas" />
+                                <h:outputText />
+                                <h:outputText value="Dirección Actual :" style="font-weight: bold;"/>
+                                <h:outputText value="San Vicente - Cañete" />
+                                <h:outputText/>
+                                <h:outputText value="Correo Electrónico :" style="font-weight: bold;"/>
+                                <h:outputText value="marcos.alarcon@vallegrande.edu.pe" />
+                                <h:outputText/>
+                                <h:outputText value="Número de Celular" style="font-weight: bold;"/>
+                                <h:outputText value="+51 929338799" />
+                                <h:outputText/>
+                            </h:panelGrid>                                
+                        </h:panelGrid>
+                    </p:fieldset>
+
+                    <p:fieldset legend="Ciurlizza Ascencio Luyo" 
+                                style="margin-bottom:20px;margin-top: 20px;" 
+                                toggleable="true" toggleSpeed="500">
+                        <h:panelGrid columns="2" cellpadding="10" columnClasses="firstColumn,secondColumn">
+                            <p:graphicImage name="/images/developer.png"  width="100%"/>
+                            <h:panelGrid columns="1" cellpadding="1">
+                                <h:outputText value="Carrera Profesional :" style="font-weight: bold;"/>
+                                <h:outputText value="Analisis de Sistemas" />
+                                <h:outputText />
+                                <h:outputText value="Dirección Actual :" style="font-weight: bold;"/>
+                                <h:outputText value="San Vicente - Cañete" />
+                                <h:outputText/>
+                                <h:outputText value="Correo Electrónico :" style="font-weight: bold;"/>
+                                <h:outputText value="ciurlizza.ascencio@vallegrande.edu.pe" />
+                                <h:outputText/>
+                                <h:outputText value="Número de Celular" style="font-weight: bold;"/>
+                                <h:outputText value="+51 924903514" />
+                                <h:outputText/>
+                            </h:panelGrid>                                
+                        </h:panelGrid>
+                    </p:fieldset>
+
+                </h:form>
+                <style>
+                    .firstColumn {
+                        width: 20%;
+                        height: 30%;
+                    }
+                    .secondColumn {
+                        width: 100%;
+                    }                    
+                </style>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

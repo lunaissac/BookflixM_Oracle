@@ -1,0 +1,416 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <body>
+
+        <ui:composition template="./../Template/TemplateMenu.xhtml">
+
+            <ui:define name="content">
+                <f:metadata>
+                    <f:event type="preRenderView" listener="#{libroC.listar()}"/>
+                </f:metadata>
+                <center>
+
+                    <p:growl showDetail="true" id="messages" life="1000"/>
+                    <h1 style="margin-top: 0;margin-bottom: 0;text-align-last: center;">REGISTRO DE LIBROS</h1>
+
+                    <div class="card card-w-title">                        
+                        <h:form id="formIns">
+                            <div align="left">
+                                <p:commandButton value="Agregar Nuevo Libro"
+                                                 icon="ui-icon-plusthick"
+                                                 onclick="PF('WDRegistrar').show();"
+                                                 style="margin-bottom: 10px;margin-top: 0px;margin-left: 0px;"
+                                                 styleClass="black-btn"/>
+
+
+
+                                <h:commandLink title="Descargar Reporte" 
+                                               style="float: right;width: 40px;" 
+                                               actionListener="#{libroC.reporteLibro()}">
+                                    <p:graphicImage url="../resources/images/pdf_1.jpg" 
+                                                    width="35"/>
+                                    <p:dataExporter type="pdf" 
+                                                    target="dtTable" 
+                                                    fileName="Reporte_Editorial" />
+                                </h:commandLink>
+                                <p:selectOneMenu id="editorial2" 
+                                                 value="#{libroC.tipo}"
+                                                 style="float: right;width:200px;margin-left: 0;padding-left: 0;"  
+                                                 effect="fold" 
+                                                 editable="false" 
+                                                 filter="true" 
+                                                 filterMatchMode="startsWith">
+                                    <f:selectItem itemLabel="- Seleccione Categoria -" 
+                                                  itemValue="#{null}" 
+                                                  noSelectionOption="true"/>
+                                    <f:selectItems value="#{categoriaC.listadoCat}" 
+                                                   var="Categoria" 
+                                                   itemLabel="#{Categoria.NOMCAT}" 
+                                                   itemValue="#{Categoria.CODCAT}" />
+                                </p:selectOneMenu>
+
+                            </div>
+
+
+
+                            <p:dialog showEffect="explode" 
+                                      modal="true" 
+                                      hideEffect="explode" 
+                                      header="REGISTRAR LIBRO"
+                                      id="DGRegistrar" 
+                                      widgetVar="WDRegistrar" >
+                                <p:panelGrid columns="2" 
+                                             id="Tabla" 
+                                             styleClass="ui-panelgrid-blank ui-fluid"
+                                             columnClasses="ui-g-12 ui-md-2">                            
+                                    <p:outputLabel value="TITULO"/>
+                                    <p:inputText value="#{libroC.libro.TITLIB}" 
+                                                 maxlength="100" 
+                                                 onkeypress="return validarTextoNumero(event);"
+                                                 requiredMessage="Ingrese Título"/>
+                                    <p:outputLabel value="CANTIDAD"/>
+                                    <p:inputText value="#{libroC.libro.CANTLIB}" 
+                                                 maxlength="4" 
+                                                 style="width: 30%"
+                                                 onkeypress="return justNumbers(event);"
+                                                 requiredMessage="Ingrese Cantidad">
+                                        <p:keyFilter regEx="/[0-9_]/i"/>
+                                    </p:inputText>
+                                    <p:outputLabel value="ESTADO"/>
+                                    <p:selectOneRadio id="console"
+                                                      value="#{libroC.libro.ESTLIB}"
+                                                      requiredMessage="Ingrese Estado">
+                                        <f:selectItem itemLabel="Regular" itemValue="R" />
+                                        <f:selectItem itemLabel="Bueno" itemValue="B" />
+                                        <f:selectItem itemLabel="Malo" itemValue="M" />
+                                    </p:selectOneRadio>
+                                    <p:outputLabel value="INGRESO"/>
+                                    <p:selectOneRadio id="ingreso" 
+                                                      value="#{libroC.libro.FORINGLIB}"
+                                                      requiredMessage="Ingrese Forma de Ingreso">
+                                        <f:selectItem itemLabel="Donado" itemValue="D" />
+                                        <f:selectItem itemLabel="Comprado" itemValue="C" />
+                                    </p:selectOneRadio>
+                                    <p:outputLabel for="autor" value="AUTOR" />
+                                    <p:selectOneMenu id="autor" 
+                                                     value="#{libroC.libro.CODAUT}" 
+                                                     style="text-align-last: center"
+                                                     effect="fold" 
+                                                     editable="false" 
+                                                     filter="true" 
+                                                     filterMatchMode="startsWith">
+                                        <f:selectItem itemLabel="---------- Seleccione ----------" itemValue="#{null}" />
+                                        <f:selectItems value="#{autorC.listadoAutor}" var="txtAutor" itemLabel="#{txtAutor.NOMAUT}  #{txtAutor.APEAUT}" itemValue="#{txtAutor.CODAUT}" />
+                                    </p:selectOneMenu>
+                                    <p:outputLabel for="categoria" value="CATEGORIA" />
+                                    <p:selectOneMenu id="categoria" 
+                                                     value="#{libroC.libro.CODCAT}" 
+                                                     style="text-align-last: center"  
+                                                     effect="fold" 
+                                                     editable="false" 
+                                                     filter="true" 
+                                                     filterMatchMode="startsWith">
+                                        <f:selectItem itemLabel="---------- Seleccione ----------" itemValue="#{null}" />
+                                        <f:selectItems value="#{categoriaC.listadoCat}" var="txtCategoria" itemLabel="#{txtCategoria.NOMCAT}" itemValue="#{txtCategoria.CODCAT}" />
+                                    </p:selectOneMenu>
+                                    <p:outputLabel for="editorial" value="EDITORIAL" />
+                                    <p:selectOneMenu id="editorial" 
+                                                     value="#{libroC.libro.CODEDIT}" 
+                                                     style="text-align-last: center" 
+                                                     effect="fold" 
+                                                     editable="false" 
+                                                     filter="true" 
+                                                     filterMatchMode="startsWith">
+                                        <f:selectItem itemLabel="---------- Seleccione ----------" itemValue="#{null}" />
+                                        <f:selectItems value="#{editorialC.listadoEdit}" var="Editorial" itemLabel="#{Editorial.NOMEDIT}" itemValue="#{Editorial.CODEDIT}" />
+                                    </p:selectOneMenu>
+                                    <p:outputLabel value="AÑO"/>
+                                    <p:inputText value="#{libroC.libro.ANNLNZLIB}"
+                                                 maxlength="4" 
+                                                 onkeypress="return justNumbers(event);"
+                                                 style="width: 30%">
+                                        <p:keyFilter regEx="/[0-9_]/i"/>
+                                    </p:inputText>         
+                                    <p:outputLabel value="PAGINAS"/>
+                                    <p:inputText value="#{libroC.libro.PAGLIB}" 
+                                                 maxlength="5" 
+                                                 onkeypress="return justNumbers(event);"
+                                                 requiredMessage="Ingrese Cantidad de pag." 
+                                                 style="width: 30%">
+                                        <p:keyFilter regEx="/[0-9_]/i"/>
+                                    </p:inputText>         
+                                    <p:outputLabel value="DESCRIPCIÓN"/>
+                                    <p:inputTextarea value="#{libroC.libro.DESCLIB}" 
+                                                     onkeypress="return validarTextoNumero(event);"
+                                                     maxlength="500" />    
+                                    <p:outputLabel value="UBICACIÓN"/>
+                                    <p:inputText value="#{libroC.libro.DIRUBILIB}"
+                                                 maxlength="100" 
+                                                 onkeypress="return validarTextoNumero(event);"
+                                                 requiredMessage="Ingrese Ubicacion"  />
+                                </p:panelGrid>
+                                <p:spacer/>                                
+                                <center>
+                                    <p:commandButton value="Registrar" 
+                                                     icon="ui-icon-pencil"
+                                                     actionListener="#{libroC.registrar()}" 
+                                                     update=":form:dtTable Tabla :messages"/> 
+                                    <p:commandButton value="limpiar" 
+                                                     icon="ui-icon-trash"
+                                                     actionListener="#{libroC.clear()}" 
+                                                     update="Tabla" 
+                                                     process="@this" 
+                                                     styleClass="black-btn"/>
+                                </center>
+                            </p:dialog>
+                        </h:form>
+
+                        <h:form id="form" style="font-size: 0.9em;">
+                            <p:dataTable value="#{libroC.listadoLib}" 
+                                         var="lista" 
+                                         widgetVar="tabladatos"
+                                         id="dtTable"
+                                         paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                         paginator="true" 
+                                         rows="10" 
+                                         rowHover="true"
+                                         style="margin-bottom:20px"
+                                         filteredValue="#{libroC.listadoFiltro}" reflow="true"
+                                         emptyMessage="No hay Registro que mostrar"
+                                         >
+                                <p:autoUpdate/>
+
+
+                                <p:column style="width:4%" >
+                                    <p:rowToggler/>
+                                </p:column>
+                                <p:rowExpansion>
+                                    <style>
+                                        .panelGridCenter td,.panelGridCenter tr {
+                                            text-align: center;
+                                        }
+
+                                    </style>
+                                    <center id="centro">
+                                        <p:panelGrid  columns="5" styleClass="panelGridCenter">
+                                            <h:outputText  value="FORMA INGRESO" style="font-weight:bold;text-align: center;"/>
+                                            <h:outputText value="UBICACIÓN" style="font-weight:bold;text-align: center;"/>
+                                            <h:outputText value="AÑO" style="font-weight:bold;text-align: center;"/>
+                                            <h:outputText value="PAGINAS" style="font-weight:bold;text-align: center;"/>
+                                            <h:outputText value="DESCRPCIÓN" style="font-weight:bold;text-align: center;"/>
+                                            <h:outputText value="Donada" rendered="#{lista.FORINGLIB eq 'D'}"/>
+                                            <h:outputText value="Comprada" rendered="#{lista.FORINGLIB eq 'C'}"/>
+                                            <h:outputText value="#{lista.DIRUBILIB}"/>
+                                            <h:outputText value="#{lista.ANNLNZLIB}" />                                        
+                                            <h:outputText value="#{lista.PAGLIB}" />
+                                            <h:outputText value="#{lista.DESCLIB}" />
+                                        </p:panelGrid>
+                                    </center>
+                                </p:rowExpansion>              
+
+                                <p:column headerText="TITULO"  filterBy="#{lista.TITLIB}" filterMatchMode="contains">
+                                    <center>
+                                        <h:outputText value="#{lista.TITLIB}" />
+                                    </center>
+                                </p:column>            
+                                <p:column headerText="AUTOR" filterBy="#{lista.CODAUT}" filterMatchMode="contains" >
+                                    <center>
+                                        <h:outputText value="#{lista.CODAUT}" />
+                                    </center>
+                                </p:column>               
+                                <p:column headerText="CATEGORIA" filterBy="#{lista.CODCAT}" filterMatchMode="contains" width="90">
+                                    <center>
+                                        <h:outputText value="#{lista.CODCAT}" />
+                                    </center>
+                                </p:column>
+                                <p:column headerText="EDITORIAL" width="90" >
+                                    <center>
+                                        <h:outputText value="#{lista.CODEDIT}" />
+                                    </center>
+                                </p:column>
+                                <p:column headerText="CANTIDAD" width="60">
+                                    <center>
+                                        <h:outputText value="#{lista.CANTLIB}"/>
+                                    </center>
+                                </p:column>
+                                <p:column headerText="ESTADO" width="60">
+                                    <center>
+                                        <h:outputText value="Bueno" rendered="#{lista.ESTLIB eq 'B'}"/>
+                                        <h:outputText value="Malo" rendered="#{lista.ESTLIB eq 'M'}"/>
+                                        <h:outputText value="Regular" rendered="#{lista.ESTLIB eq 'R'}"/>
+                                    </center>
+                                </p:column>
+                                <!-- Modificar -->
+                                <p:column width="40">
+                                    <center>
+                                        <p:commandButton icon="ui-icon-pencil" 
+                                                         oncomplete="PF('wdlgDatos').show();" 
+                                                         update=":dlgDatos" id="grow"
+                                                         styleClass="orange-btn">
+                                            <f:setPropertyActionListener value="#{lista}" target="#{libroC.libro}"/>               
+                                        </p:commandButton>
+                                        <p:tooltip id="toolTipGrow" for="grow" value="MODIFICAR"
+                                                   showEffect="clip" hideEffect="explode" position="left"/>
+                                    </center>
+                                </p:column>
+                                <!-- Eliminar -->
+                                <p:column width="40">
+                                    <center>
+                                        <p:commandButton icon="ui-icon-circle-close"  update=":messages :form"
+                                                         actionListener="#{libroC.eliminar(lista)}" id="elim" style="background:#EE6F6F;">
+                                            <p:confirm header="Confirmación" message="¿Deseas Eliminar? " icon="ui-icon-alert" />
+                                            <p:tooltip trackMouse="true"/>
+                                        </p:commandButton>
+                                        <p:tooltip id="eliminar" for="elim" value="ELIMINAR"
+                                                   showEffect="clip" hideEffect="explode" position="left"/>
+                                    </center> 
+                                </p:column>
+                                <!--                            <f:facet name="footer">
+                                                                EN TOTAL HAY {fn:length(libroC.listadoLib)} REGISTROS.
+                                                            </f:facet>-->
+                            </p:dataTable>
+                        </h:form>
+                    </div>
+
+                    <!--        ACTUALIZAR-->
+
+                    <p:dialog showEffect="explode" 
+                              modal="true" 
+                              hideEffect="explode" 
+                              header="EDITAR LIBRO"
+                              id="dlgDatos" 
+                              widgetVar="wdlgDatos" >
+                        <h:form id="Update">
+                            <p:panelGrid columns="2"
+                                         styleClass="ui-panelgrid-blank ui-fluid"
+                                         columnClasses="ui-g-12 ui-md-2">
+                                <p:outputLabel value="TITULO"/>
+                                <p:inputText value="#{libroC.libro.TITLIB}" 
+                                             maxlength="100" 
+                                             onkeypress="return validarTextoNumero(event);"
+                                             requiredMessage="Ingrese Título"/>
+                                <p:outputLabel value="CANTIDAD"/>
+                                <p:inputText value="#{libroC.libro.CANTLIB}" 
+                                             maxlength="4" 
+                                             style="width: 30%"
+                                             onkeypress="return justNumbers(event);"
+                                             requiredMessage="Ingrese Cantidad">
+                                    <p:keyFilter regEx="/[0-9_]/i"/>
+                                </p:inputText>
+                                <p:outputLabel value="Estado"/>
+                                <p:selectOneRadio id="console" value="#{libroC.libro.ESTLIB}">
+                                    <f:selectItem itemLabel="Regular" itemValue="R" />
+                                    <f:selectItem itemLabel="Bueno" itemValue="B" />
+                                    <f:selectItem itemLabel="Malo" itemValue="M" />
+                                </p:selectOneRadio>
+                                <p:outputLabel value="Ingreso"/>
+                                <p:selectOneRadio id="ingreso" value="#{libroC.libro.FORINGLIB}">
+                                    <f:selectItem itemLabel="Donado" itemValue="D" />
+                                    <f:selectItem itemLabel="Comprado" itemValue="C" />
+                                </p:selectOneRadio>
+                                <p:outputLabel value="Autor"/>
+                                <p:selectOneMenu id="autor" value="#{libroC.libro.CODAUT2}"
+                                                 style="width:240px"  effect="fold" 
+                                                 editable="false" filter="true" 
+                                                 filterMatchMode="startsWith">
+                                    <f:selectItem itemLabel="---------- Seleccione ----------" 
+                                                  itemValue="#{null}" />
+                                    <f:selectItems value="#{autorC.listadoAutor}" 
+                                                   var="txtAutor" 
+                                                   itemLabel="#{txtAutor.NOMAUT}  #{txtAutor.APEAUT}" 
+                                                   itemValue="#{txtAutor.CODAUT}" />
+                                </p:selectOneMenu>  
+                                <p:outputLabel value="Categoria"/> 
+                                <p:selectOneMenu id="categoria" 
+                                                 value="#{libroC.libro.CODCAT2}" 
+                                                 style="width:240px"  effect="fold" 
+                                                 editable="false" filter="true" 
+                                                 filterMatchMode="startsWith">
+                                    <f:selectItem itemLabel="---------- Seleccione ----------" itemValue="#{null}" />
+                                    <f:selectItems value="#{categoriaC.listadoCat}" 
+                                                   var="txtCategoria" 
+                                                   itemLabel="#{txtCategoria.NOMCAT}" 
+                                                   itemValue="#{txtCategoria.CODCAT}" />
+                                </p:selectOneMenu>
+                                <p:outputLabel value="Editorial"/> 
+                                <p:selectOneMenu id="editorial" value="#{libroC.libro.CODEDIT2}" style="width:240px"  effect="fold" editable="false" filter="true" filterMatchMode="startsWith">
+                                    <f:selectItem itemLabel="---------- Seleccione ----------" itemValue="#{null}" />
+                                    <f:selectItems value="#{editorialC.listadoEdit}" 
+                                                   var="Editorial" itemLabel="#{Editorial.NOMEDIT}" 
+                                                   itemValue="#{Editorial.CODEDIT}" />
+                                </p:selectOneMenu>
+                                <p:outputLabel value="AÑO"/>
+                                <p:inputText value="#{libroC.libro.ANNLNZLIB}"
+                                             maxlength="4" 
+                                             onkeypress="return justNumbers(event);"
+                                             style="width: 30%">
+                                    <p:keyFilter regEx="/[0-9_]/i"/>
+                                </p:inputText>         
+                                <p:outputLabel value="PAGINAS"/>
+                                <p:inputText value="#{libroC.libro.PAGLIB}" 
+                                             maxlength="5" 
+                                             onkeypress="return justNumbers(event);"
+                                             requiredMessage="Ingrese Cantidad de pag." 
+                                             style="width: 30%">
+                                    <p:keyFilter regEx="/[0-9_]/i"/>
+                                </p:inputText>         
+                                <p:outputLabel value="DESCRIPCIÓN"/>
+                                <p:inputTextarea value="#{libroC.libro.DESCLIB}" 
+                                                 onkeypress="return validarTextoNumero(event);"
+                                                 maxlength="500" /> 
+                                <p:outputLabel value="Ubicacion"/>
+                                <p:inputText value="#{libroC.libro.DIRUBILIB}" 
+                                             maxlength="500" 
+                                             onkeypress="return validarTextoNumero(event);"
+                                             size="26"/>
+                            </p:panelGrid>
+                            <p:spacer/>
+                            <center>
+                                <p:commandButton value="Actualizar" 
+                                                 actionListener="#{libroC.modificar()}"
+                                                 update=":form :messages" 
+                                                 icon="ui-icon-pencil" 
+                                                 oncomplete="if (args &amp;&amp; !args.validationFailed)PF('wdlgDatos').hide();">
+                                    <p:confirm header="Confirmación"
+                                               message="¿Deseas Modificar?" 
+                                               icon="ui-icon-alert" />
+                                    <p:tooltip trackMouse="true"/>
+                                </p:commandButton>
+                                <p:commandButton value="Cancelar" 
+                                                 icon="ui-icon-close"
+                                                 immediate="true" 
+                                                 oncomplete="PF('wdlgDatos').hide();" 
+                                                 styleClass="black-btn"/>
+                            </center>
+                        </h:form>
+                    </p:dialog>
+                    <h:form>
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <center>
+                                <p:commandButton value="Si"
+                                                 type="button"
+                                                 styleClass="ui-confirmdialog-yes" 
+                                                 icon="ui-icon-check" 
+                                                 style="background: #FFC107" 
+                                                 update=":form"/>
+                                <p:commandButton value="No" 
+                                                 type="button" 
+                                                 styleClass="ui-confirmdialog-no" 
+                                                 icon="ui-icon-close" 
+                                                 style="background: #00BCD4"/>
+                            </center>
+                        </p:confirmDialog>
+                    </h:form>
+                </center> 
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

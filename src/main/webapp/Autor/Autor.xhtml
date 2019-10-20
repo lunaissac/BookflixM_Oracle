@@ -1,0 +1,244 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../Template/TemplateMenu.xhtml">
+
+            <ui:define name="content">
+                <h1 style="margin-top: 0;margin-bottom: 0;text-align-last: center;">REGISTRO DE AUTORES</h1>
+                <center>
+                    <p:growl  id="mensaje" showDetail="true" />
+                    <div class="card card-w-title">
+                        <h:form id="formIns">
+                            <div align="left">
+                                <p:commandButton value="Agregar Nuevo Autor" 
+                                                 icon="ui-icon-plusthick"
+                                                 actionListener="#{autorC.limpiar()}" 
+                                                 onclick="PF('WDRegistrar').show();"
+                                                 styleClass="black-btn"
+                                                 style="margin-top: 0;margin-bottom: 0;margin-left: 0;margin-right: 0; "/>
+                            </div>
+
+                            <p:dialog showEffect="explode" 
+                                      modal="true" 
+                                      hideEffect="explode" 
+                                      header="REGISTRAR AUTOR"
+                                      id="DGRegistrar" 
+                                      widgetVar="WDRegistrar" >
+                                <p:panelGrid columns="2" 
+                                             id="Tabla" 
+                                             styleClass="ui-panelgrid-blank ui-fluid"
+                                             columnClasses="ui-md-2 ui-md-4">
+                                    <p:outputLabel value="NOMBRES"/>
+                                    <p:inputText value="#{autorC.autor.NOMAUT}" 
+                                                 maxlength="100"
+                                                 required="true"
+                                                 requiredMessage="Ingrese Nombre"
+                                                 onkeypress="return validarTexto(event);">
+                                        <p:keyFilter regEx="/[a-z_A-Z_ñ _á_é_í_ó_ú]/"/>
+                                    </p:inputText>
+                                    <p:outputLabel value="APELLIDOS"/>
+                                    <p:inputText value="#{autorC.autor.APEAUT}" 
+                                                 maxlength="100"
+                                                 required="true"
+                                                 onkeypress="return validarTexto(event);"
+                                                 requiredMessage="Ingrese Apellido" >
+                                        <p:keyFilter regEx="/[a-z_A-Z_ñ _á_é_í_ó_ú]/"/>
+                                    </p:inputText>
+                                    <p:outputLabel value="PAIS"/>
+                                    <p:autoComplete value="#{autorC.autor.CODNACI}" 
+                                                    completeMethod="#{autorC.completeTextNacionalidad}" 
+                                                    forceSelection="true"
+                                                    onkeyup="return validarTexto(event);"
+                                                    requiredMessage="Ingrese Pais" />
+                                </p:panelGrid>
+                                <p:spacer/>
+                                <p:spacer/>
+                                <center>
+                                    <p:commandButton value="Registrar" 
+                                                     icon="ui-icon-pencil"
+                                                     actionListener="#{autorC.registrar()}" 
+                                                     update="Tabla :form,mensaje"
+                                                     oncomplete="if (args &amp;&amp; !args.validationFailed)PF('WDRegistrar').hide();"/>
+                                    <p:commandButton value="Limpiar" 
+                                                     actionListener="#{autorC.limpiar()}" 
+                                                     update="Tabla" 
+                                                     process="@this" 
+                                                     icon="ui-icon-trash" 
+                                                     styleClass="black-btn"/>
+                                </center>
+                            </p:dialog>
+
+                        </h:form>
+
+                        <p:spacer/>
+
+
+                        <p:growl  showDetail="true" id="messages"/>
+                        <h:form id="form">
+                            <p:dataTable value="#{autorC.listadoAutor}" 
+                                         var="lista" 
+                                         reflow="true"
+                                         id="dtTabla"
+                                         rowHover="true" 
+                                         rowSelector="true"
+                                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+                                         paginator="true" 
+                                         rows="10" 
+                                         style="margin-bottom:20px" 
+                                         filteredValue="#{autorC.listadoAutor2}">
+
+                                <f:facet name="header">
+                                    <h:commandLink id="REP" 
+                                                   title="Descargar Reporte" 
+                                                   style="float:right;width: 50px" 
+                                                   actionListener="#{autorC.reporteAutor()}">
+                                        <p:graphicImage url="../resources/images/pdf_1.jpg" width="40"/>
+                                        <p:dataExporter type="pdf" 
+                                                        target="dtTabla" 
+                                                        fileName="Reporte_Autores"/>
+                                        <p:tooltip trackMouse="true"/>
+                                    </h:commandLink>
+                                    <p:tooltip for="REP" 
+                                               value="Descargar Reporte"
+                                               showEffect="clip" 
+                                               hideEffect="size" 
+                                               position="left"/>
+                                </f:facet> 
+
+
+                                <p:column headerText="N°" width="150">
+                                    <center>
+                                        <h:outputText value="#{lista.CODAUT}" />
+                                    </center>
+                                </p:column>
+                                <p:column headerText="NOMBRE"  filterBy="#{lista.NOMAUT}" filterMatchMode="contains">
+                                    <center>
+                                        <h:outputText value="#{lista.NOMAUT}" />
+                                    </center>
+                                </p:column>
+                                <p:column headerText="APELLIDO" >
+                                    <center>
+                                        <h:outputText value="#{lista.APEAUT}" />
+                                    </center>
+                                </p:column>
+                                <p:column headerText="PAIS" >
+                                    <center>
+                                        <h:outputText value="#{lista.CODNACI}" />
+                                    </center>
+                                </p:column>
+                                <!-- Modificar -->
+                                <p:column width="60">
+                                    <center>
+                                        <p:commandButton icon="ui-icon-pencil"  
+                                                         styleClass="orange-btn"
+                                                         oncomplete="PF('wdlgDatos').show();" 
+                                                         update=":dlgDatos" id="grow">
+                                            <f:setPropertyActionListener value="#{lista}" target="#{autorC.autor}"/>                 
+                                        </p:commandButton>
+                                        <p:tooltip id="toolTipGrow" 
+                                                   for="grow" 
+                                                   value="MODIFICAR"
+                                                   showEffect="clip" 
+                                                   hideEffect="explode" 
+                                                   position="left"/>
+                                    </center>
+                                </p:column> 
+                                <!-- Eliminar -->
+                                <p:column width="60">
+                                    <center>
+                                        <p:commandButton icon="ui-icon-circle-close"  
+                                                         update=":messages :form"  
+                                                         style="background:#EE6F6F;"
+                                                         actionListener="#{autorC.eliminar(lista)}" 
+                                                         id="elim">
+                                            <p:confirm header="Confirmación" message="¿Deseas Eliminar? " icon="ui-icon-alert" />
+                                            <p:tooltip trackMouse="true"/>
+                                        </p:commandButton>
+                                        <p:tooltip id="eliminar" 
+                                                   for="elim" 
+                                                   value="ELIMINAR"
+                                                   showEffect="clip" 
+                                                   hideEffect="explode" 
+                                                   position="left"/>
+                                    </center>
+                                </p:column>
+                                <!--                            <f:facet name="footer">
+                                                                EN TOTAL HAY {fn:length(autorC.listadoAutor)} REGISTROS.
+                                                            </f:facet>-->
+                            </p:dataTable>
+                        </h:form>
+
+                        <p:dialog showEffect="explode" 
+                                  modal="true" 
+                                  hideEffect="explode" 
+                                  header="EDITAR AUTOR"
+                                  id="dlgDatos" 
+                                  widgetVar="wdlgDatos" >
+                            <h:form id="Datos">
+                                <p:panelGrid columns="2"
+                                             styleClass="ui-panelgrid-blank ui-fluid">
+                                    <p:outputLabel value="Nombre"/>
+                                    <p:inputText value="#{autorC.autor.NOMAUT}" maxlength="100">
+                                        <p:keyFilter regEx="/[a-z_A-Z_ñ _á_é_í_ó_ú]/"/>
+                                    </p:inputText>
+                                    <p:outputLabel value="Apellido"/>
+                                    <p:inputText value="#{autorC.autor.APEAUT}" maxlength="100">
+                                        <p:keyFilter regEx="/[a-z_A-Z_ñ _á_é_í_ó_ú]/"/>
+                                    </p:inputText>                  
+                                    <p:outputLabel value="Nacionalidad"/>
+                                    <p:autoComplete value="#{autorC.autor.CODNACI}" 
+                                                    completeMethod="#{autorC.completeTextNacionalidad}" 
+                                                    required="true" 
+                                                    requiredMessage="Ingrese Nacionalidad"/>
+                                </p:panelGrid>
+                                <p:spacer/>
+                                <center>
+                                    <p:commandButton value="Actualizar" 
+                                                     actionListener="#{autorC.modificar()}"
+                                                     update=":form :messages"
+                                                     icon="ui-icon-pencil" 
+                                                     oncomplete="if (args &amp;&amp; !args.validationFailed)PF('wdlgDatos').hide();">
+                                        <p:confirm header="Confirmación" 
+                                                   message="¿Deseas Modificar? " 
+                                                   icon="ui-icon-alert" />
+                                        <p:tooltip trackMouse="true"/>
+                                    </p:commandButton>            
+                                    <p:commandButton value="Cancelar"
+                                                     icon="ui-icon-close"
+                                                     immediate="true" 
+                                                     oncomplete="PF('wdlgDatos').hide();" 
+                                                     styleClass="black-btn"/>
+                                </center>
+                            </h:form>
+                        </p:dialog>
+                        <h:form>
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                <center>
+                                    <p:commandButton value="Si" 
+                                                     type="button" 
+                                                     styleClass="ui-confirmdialog-yes" 
+                                                     icon="ui-icon-check" 
+                                                     style="background: #FFC107"/>
+                                    <p:commandButton value="No" 
+                                                     type="button" 
+                                                     styleClass="ui-confirmdialog-no" 
+                                                     icon="ui-icon-close" 
+                                                     style="background: #00BCD4"/>
+                                </center>
+                            </p:confirmDialog>
+                        </h:form>
+                    </div>
+                </center> 
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

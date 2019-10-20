@@ -1,0 +1,382 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../Template/TemplateMenu.xhtml">
+
+            <ui:define name="content">
+                <p:growl id="mnsj" showDetail="true" widgetVar="growlWV" sticky="9999999"/>
+                <h1 style="margin-top: 0;margin-bottom: 0;text-align-last: center;">RESGISTRO DE PERSONA</h1>
+                <div class="card card-w-title">
+                    <h:form id="formIns">
+                        <p:commandButton value="Agregar Nueva Persona" 
+                                         icon="ui-icon-plusthick"
+                                         oncomplete="PF('WVRegistrar').show();"
+                                         update="DGRegistrar"
+                                         styleClass="black-btn"
+                                         style="margin-top: 0;margin-bottom: 10px;"/>
+                        <p:dialog showEffect="explode" 
+                                  modal="true" 
+                                  hideEffect="bounce" 
+                                  header="REGISTRAR PERSONA"
+                                  id="DGRegistrar" 
+                                  widgetVar="WVRegistrar" >
+                            <p:panelGrid columns="2" 
+                                         id="Tabla" 
+                                         styleClass="ui-panelgrid-blank ui-fluid"
+                                         columnClasses="ui-g-12 ui-md-2">
+                                <p:outputLabel value="NOMBRE"/> 
+                                <p:inputText value="#{personaC.persona.NOMPER}" 
+                                             onkeypress="return validarTexto(event);"
+                                             onfocus="true"
+                                             style="width: 100% !important">
+                                    <p:keyFilter regEx="/[a-z_A-Z_ñ _á_é_í_ó_ú]/"/>
+                                </p:inputText>
+                                <p:outputLabel value="APELLIDO"/> 
+                                <p:inputText value="#{personaC.persona.APEPER}" 
+                                             onkeypress="return validarTexto(event);"
+                                             onfocus="true"
+                                             required="true"
+                                             requiredMessage="Ingrese Apellido">
+                                    <p:keyFilter regEx="/[a-z_A-Z_ñ _á_é_í_ó_ú]/"/>
+                                </p:inputText>
+                                <p:outputLabel value="DNI"/> 
+                                <p:inputText value="#{personaC.persona.DNIPER}" 
+                                             maxlength="8" size="8" 
+                                             onblur="ValidarDNI(this);"
+                                             required="true"
+                                             requiredMessage="Ingrese DNI"
+                                             onkeypress="return justNumbers(event);">
+                                    <p:keyFilter regEx="/[0-9_]/i"/> 
+                                </p:inputText>
+                                <p:outputLabel for="console" value="TIPO" />
+                                <p:selectOneMenu id="console" value="#{personaC.persona.TIPPER}" >  
+                                    <f:selectItem itemLabel="LECTOR" itemValue="L" />
+                                    <f:selectItem itemLabel="BIBLIOTECARIO" itemValue="B" />
+                                    <f:selectItem itemLabel="ADMINISTRADOR" itemValue="A" />
+                                    <p:ajax update="GRADO,SECCION,sector" /> 
+                                </p:selectOneMenu>
+
+                                <p:outputLabel value="GRADO"/> 
+                                <p:selectOneMenu id="GRADO" 
+                                                 value="#{personaC.persona.GRADAUL}"  
+                                                 disabled="#{personaC.persona.TIPPER eq 'A' or personaC.persona.TIPPER eq 'B'}" 
+                                                 effectSpeed="true">
+                                    <f:selectItem itemLabel="Seleccione" itemValue=""/>
+                                    <f:selectItem itemLabel="1° Grado" itemValue="1"/>
+                                    <f:selectItem itemLabel="2° Grado" itemValue="2"/>
+                                    <f:selectItem itemLabel="3° Grado" itemValue="3"/>
+                                    <f:selectItem itemLabel="4° Grado" itemValue="4"/>
+                                    <f:selectItem itemLabel="5° Grado" itemValue="5"/>  
+                                </p:selectOneMenu> 
+
+                                <p:outputLabel  value="SECCIÓN"/> 
+                                <p:selectOneMenu id="SECCION" value="#{personaC.persona.SECCAUL}" 
+                                                 disabled="#{personaC.persona.TIPPER eq 'A'  or  personaC.persona.TIPPER == 'B'}">
+                                    <f:selectItem itemLabel="Seleccione" itemValue=""/>
+                                    <f:selectItem itemLabel="A" itemValue="A"/>
+                                    <f:selectItem itemLabel="B" itemValue="B"/>
+                                    <f:selectItem itemLabel="C" itemValue="C"/>                   
+                                </p:selectOneMenu> 
+                                <p:outputLabel for="sector" value="SECTOR" />
+                                <p:selectOneRadio id="sector" 
+                                                  value="#{personaC.persona.SECTAUL}" 
+                                                  requiredMessage="Seleccione Sector" 
+                                                  disabled="#{personaC.persona.TIPPER == 'A'  or  personaC.persona.TIPPER == 'B'}">
+                                    <f:selectItem itemLabel="Mayor" itemValue="M"/>
+                                    <f:selectItem itemLabel="Menor" itemValue="N" />
+                                </p:selectOneRadio>
+                                <p:outputLabel value="DISTRITO"/> 
+                                <p:autoComplete  value="#{personaC.persona.CODUBI}" 
+                                                 completeMethod="#{personaC.completeTextUbigeo}" 
+                                                 forceSelection="true"
+                                                 onkeyup="mayus(this);"/>
+                                <p:outputLabel value="USUARIO"/> 
+                                <p:inputText value="#{personaC.persona.USUPER}" 
+                                             type="txt" 
+                                             onkeyup="noespacios(this)"
+                                             onkeypress="return validarTextoNumero(event);"/>
+                                <p:outputLabel value="CONTRASEÑA"/>
+                                <p:password value="#{personaC.persona.PASSPER}"/>
+                            </p:panelGrid>
+                            
+                            <p:spacer/>
+                            
+                            <center>
+                                <p:commandButton value="Registrar" 
+                                                 actionListener="#{personaC.registrar()}" 
+                                                 update="Tabla :form,mnsj"
+                                                 icon="ui-icon-pencil"
+                                                 oncomplete="if (args &amp;&amp; !args.validationFailed)PF('WVRegistrar').hide();"/>
+                                <p:commandButton value="Limpiar"
+                                                 icon="ui-icon-trash"
+                                                 actionListener="#{personaC.limpiar()}" 
+                                                 update="Tabla" process="@this" 
+                                                 styleClass="black-btn"/>
+                            </center>
+
+                        </p:dialog>
+
+                    </h:form>
+
+
+                    <p:growl  showDetail="true" id="messages"/>
+                    <h:form id="form" style="font-size: 0.9em;">
+                        <p:dataTable value="#{personaC.listadoper}"
+                                     var="lista" 
+                                     id="dtTabla"
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                     paginator="true" 
+                                     rows="20"
+                                     reflow="true"
+                                     rowHover="true"
+                                     style="margin-bottom:20px" 
+                                     filteredValue="#{personaC.listadoper2}"
+                                     emptyMessage="No hay Registro que mostrar">
+
+                            <f:facet name="header">
+                                <h:commandLink id="REP" 
+                                               title="Descargar Reporte" 
+                                               style="float:right;width: 50px"
+                                               actionListener="#{personaC.reportePersona()}">
+                                    <p:graphicImage url="../resources/images/pdf_1.jpg" 
+                                                    width="40"/>
+                                    <p:dataExporter type="pdf" 
+                                                    target="dtTabla" 
+                                                    fileName="Reporte_Editoriales"/>
+                                    <p:tooltip trackMouse="true"/>
+                                </h:commandLink>
+                                <p:tooltip for="REP" value="Descargar Reporte"
+                                           showEffect="clip" hideEffect="size" position="left"/>
+                            </f:facet>    
+
+                            <p:column style="width: 40px" >
+                                <p:rowToggler/>
+                            </p:column>
+                            <p:rowExpansion>
+                                <style>
+                                    .panelGridCenter td,.panelGridCenter tr {
+                                        text-align: center;
+                                    }
+
+                                </style>
+                                <center>
+                                    <p:panelGrid  columns="3"  
+                                                  styleClass="panelGridCenter">
+                                        <h:outputText value="GRADO" style="font-weight:bold;text-align: center;"/>                        
+                                        <h:outputText value="SECCIÓN" style="font-weight:bold;text-align: center;"/>                        
+                                        <h:outputText value="DISTRITO" style="font-weight:bold;text-align: center;"/>
+                                        <h:outputText value="#{lista.GRADAUL}" />
+                                        <h:outputText value="#{lista.SECCAUL}" />
+                                        <h:outputText value="#{lista.CODUBI}" />
+                                    </p:panelGrid>
+                                </center>
+                            </p:rowExpansion>
+
+                            <p:column headerText="NOMBRES">
+                                <center>
+                                    <h:outputText value="#{lista.NOMPER}"/>
+                                </center>
+                            </p:column>
+                            <p:column headerText="APELLIDOS" 
+                                      filterBy="#{lista.APEPER}" 
+                                      filterMatchMode="contains">
+                                <center>
+                                    <h:outputText value="#{lista.APEPER}"/>
+                                </center>
+                            </p:column>
+                            <p:column headerText="DNI" 
+                                      filterBy="#{lista.DNIPER}" 
+                                      filterMatchMode="contains">
+                                <center>
+                                    <h:outputText value="#{lista.DNIPER}"/>
+                                </center>
+                            </p:column>
+                            <p:column headerText="TIPO">
+                                <center>
+                                    <h:outputText value="Administrador"
+                                                  rendered="#{lista.TIPPER eq 'A'}"/>
+                                    <h:outputText value="Lector" 
+                                                  rendered="#{lista.TIPPER eq 'L'}"/>
+                                    <h:outputText value="Bibliotecario" 
+                                                  rendered="#{lista.TIPPER eq 'B'}"/>
+                                </center>
+                            </p:column>                               
+                            <p:column headerText="SECTOR">
+                                <center>
+                                    <h:outputText value="Mayor" 
+                                                  rendered="#{lista.SECTAUL eq 'M'}"/>
+                                    <h:outputText value="Menor" 
+                                                  rendered="#{lista.SECTAUL eq 'N'}"/>
+                                </center>
+                            </p:column>
+                            <!-- Modificar -->
+                            <p:column width="35">
+                                <p:commandButton icon="ui-icon-pencil"
+                                                 oncomplete="PF('wdlgDatos').show();" 
+                                                 update=":dlgDatos dtTabla" 
+                                                 id="grow"
+                                                 styleClass="orange-btn">
+                                    <f:setPropertyActionListener value="#{lista}" target="#{personaC.persona}"/>                 
+                                </p:commandButton>
+                                <p:tooltip id="toolTipGrow" 
+                                           for="grow" 
+                                           value="MODIFICAR"
+                                           showEffect="clip" 
+                                           hideEffect="explode" 
+                                           position="left"/>
+                            </p:column> 
+                            <!--Eliminar-->
+                            <p:column width="35">
+                                <p:commandButton icon="ui-icon-circle-close" 
+                                                 update=":messages dtTabla" 
+                                                 style="background:#EE6F6F;"
+                                                 actionListener="#{personaC.eliminar(lista)}" 
+                                                 id="elim">
+                                    <p:confirm header="Confirmación" 
+                                               message="¿Deseas Eliminar? " 
+                                               icon="ui-icon-alert" />
+                                    <p:tooltip trackMouse="true"/>
+                                </p:commandButton>
+                                <p:tooltip id="eliminar" 
+                                           for="elim" 
+                                           value="ELIMINAR"
+                                           showEffect="clip" 
+                                           hideEffect="explode" 
+                                           position="left"/>
+                            </p:column>
+                            <!--                            <f:facet name="footer">
+                                                            EN TOTAL HAY {fn:length(personaC.listadoper)} REGISTROS.
+                                                        </f:facet>-->
+
+                        </p:dataTable>
+                    </h:form>
+                </div>
+                <p:dialog showEffect="explode" modal="true" hideEffect="explode" header="EDITAR PERSONA"
+                          id="dlgDatos" widgetVar="wdlgDatos" >
+                    <h:form>
+                        <p:panelGrid columns="2"
+                                     styleClass="ui-panelgrid-blank ui-fluid"
+                                     columnClasses="ui-g-12 ui-md-2">
+                            <p:outputLabel value="NOMBRE"/> 
+                            <p:inputText value="#{personaC.persona.NOMPER}" 
+                                         required="true" 
+                                         requiredMessage="Ingrese Nombre">
+                                <p:keyFilter regEx="/[a-z_A-Z_ñ _á_é_í_ó_ú]/"/>
+                            </p:inputText>
+                            <p:outputLabel value="APELLIDO"/> 
+                            <p:inputText value="#{personaC.persona.APEPER}" 
+                                         required="true" 
+                                         requiredMessage="Ingrese Apellido">
+                                <p:keyFilter regEx="/[a-z_A-Z_ñ _á_é_í_ó_ú]/"/>
+                            </p:inputText>
+                            <p:outputLabel value="DNI"/> 
+                            <p:inputText value="#{personaC.persona.DNIPER}" 
+                                         maxlength="8" 
+                                         size="8" 
+                                         onkeypress="return ValidarDni(event);">
+                                <p:keyFilter regEx="/[0-9_]/i" />  
+                            </p:inputText>
+                            <p:outputLabel for="console" value="TIPO" />
+                            <p:selectOneMenu id="console" value="#{personaC.persona.TIPPER}" >  
+                                <f:selectItem itemLabel="LECTOR" itemValue="L" />
+                                <f:selectItem itemLabel="BIBLIOTECARIO" itemValue="B" />
+                                <f:selectItem itemLabel="ADMINISTRADOR" itemValue="A" />
+                                <p:ajax update="GRADO,SECCION,sector" /> 
+                            </p:selectOneMenu>
+
+                            <p:outputLabel value="GRADO"/> 
+                            <p:selectOneMenu id="GRADO" 
+                                             value="#{personaC.persona.GRADAUL}" 
+                                             filter="true" 
+                                             disabled="#{personaC.persona.TIPPER eq 'A' or personaC.persona.TIPPER eq 'B'}" 
+                                             effectSpeed="true">
+                                <f:selectItem itemLabel="Seleccione" itemValue=""/>
+                                <f:selectItem itemLabel="1° Grado" itemValue="1"/>
+                                <f:selectItem itemLabel="2° Grado" itemValue="2"/>
+                                <f:selectItem itemLabel="3° Grado" itemValue="3"/>
+                                <f:selectItem itemLabel="4° Grado" itemValue="4"/>
+                                <f:selectItem itemLabel="5° Grado" itemValue="5"/>  
+                            </p:selectOneMenu> 
+
+                            <p:outputLabel  value="SECCIÓN"/> 
+                            <p:selectOneMenu id="SECCION" value="#{personaC.persona.SECCAUL}" 
+                                             disabled="#{personaC.persona.TIPPER eq 'A'  or  personaC.persona.TIPPER == 'B'}">
+                                <f:selectItem itemLabel="Seleccione" itemValue=""/>
+                                <f:selectItem itemLabel="A" itemValue="A"/>
+                                <f:selectItem itemLabel="B" itemValue="B"/>
+                                <f:selectItem itemLabel="C" itemValue="C"/>                   
+                            </p:selectOneMenu> 
+                            <p:outputLabel for="sector" value="SECTOR" />
+                            <p:selectOneRadio id="sector" 
+                                              value="#{personaC.persona.SECTAUL}" 
+                                              required="true" 
+                                              requiredMessage="Seleccione Sector" 
+                                              disabled="#{personaC.persona.TIPPER == 'A'  or  personaC.persona.TIPPER == 'B'}">
+                                <f:selectItem itemLabel="Mayor" itemValue="M"/>
+                                <f:selectItem itemLabel="Menor" itemValue="N" />
+                            </p:selectOneRadio>
+                            <p:outputLabel value="DISTRITO"/> 
+                            <p:autoComplete  value="#{personaC.persona.CODUBI}" 
+                                             completeMethod="#{personaC.completeTextUbigeo}" 
+                                             forceSelection="true"/>
+                            <p:outputLabel value="USUARIO"/> 
+                            <p:inputText value="#{personaC.persona.USUPER}"/>
+                            <p:outputLabel value="CONTRASEÑA"/> 
+                            <p:password value="#{personaC.persona.PASSPER}" label="true"/>
+                        </p:panelGrid>
+                        
+                        <p:spacer/>
+                        
+                        <center>
+                            <p:commandButton value="Actualizar" 
+                                             icon="ui-icon-pencil"
+                                             actionListener="#{personaC.modificar()}"
+                                             update=":form :messages" 
+                                             oncomplete="if (args &amp;&amp; !args.validationFailed)PF('wdlgDatos').hide();" 
+                                             >
+                                <p:confirm header="Confirmación" 
+                                           message="¿Deseas Modificar? " 
+                                           icon="ui-icon-alert" />
+                                <p:tooltip trackMouse="true"/>
+                            </p:commandButton>  
+                            <p:commandButton value="Cancelar" 
+                                             icon="ui-icon-close"
+                                             immediate="true" 
+                                             oncomplete="PF('wdlgDatos').hide();" 
+                                             styleClass="black-btn"/>
+                        </center>
+                    </h:form>
+
+                </p:dialog>
+                <h:form>
+                    <p:confirmDialog global="true" 
+                                     showEffect="fade"
+                                     hideEffect="fade">
+                        <center>
+                            <p:commandButton value="Si" 
+                                             type="button" 
+                                             styleClass="ui-confirmdialog-yes" 
+                                             icon="ui-icon-check" 
+                                             style="background: #FFC107" 
+                                             update=":form"/>
+                            <p:commandButton value="No" 
+                                             type="button"
+                                             styleClass="ui-confirmdialog-no" 
+                                             icon="ui-icon-close" 
+                                             style="background: #00BCD4"/>
+                        </center>
+                    </p:confirmDialog>
+                </h:form> 
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

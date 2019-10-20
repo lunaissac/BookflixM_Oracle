@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions" xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="./../Template/TemplateMenu.xhtml">
+            <ui:define name="content">
+                <f:metadata>
+                    <f:event type="preRenderView" listener="#{pre_Dev_ChartJS.createBarModel2()}"/>
+                    <f:event type="preRenderView" listener="#{año_libro_ChartJS.createLineModel()}"/>
+                    <f:event type="preRenderView" listener="#{prestamo_devolucion_ChartJS.createPieModel()}"/>
+                    <f:event type="preRenderView" listener="#{año_libroC.createBarModel()}"/>
+                </f:metadata>
+                <h:panelGroup id="pnlGrAdmin" >  
+                    <div class="card">
+                        
+                        <h:form>
+                            <p:growl id="growl" showDetail="true" />
+
+                            <p:barChart model="#{pre_Dev_ChartJS.barModel2}" 
+                                        style="width: 55%; height: auto;">
+                                <p:ajax event="itemSelect" listener="#{pre_Dev_ChartJS.itemSelect}" update="growl"/>
+                            </p:barChart>
+                        </h:form>
+                    </div>
+                    <div class="card">
+                        <div class="col-lg-12">
+                            
+                            <p:lineChart model="#{año_libro_ChartJS.lineModel}" 
+                                         style="width: 55%; height: auto;" />
+                        </div>
+                    </div>                                     
+
+                    <div class="ui-g-12 ui-lg-6">
+                        <div class="card">
+                            <h1 class="centerText">Prestamos - Devoluciones</h1>
+                            
+                            <p:pieChart model="#{prestamo_devolucion_ChartJS.pieModel}" 
+                                        style="width: 45%; height: auto;"/>
+                        </div>
+                    </div>
+                    <div class="ui-g-12 ui-lg-6">
+                        <div class="card">
+                            <h1 class="centerText">Lectores por Grado</h1>
+                            <p:barChart model="#{año_libroC.barModel}" 
+                                        style="width: 40%; height: auto;"/>                            
+                        </div>
+                    </div>
+
+                </h:panelGroup>  
+            </ui:define>
+        </ui:composition> 
+    </h:body>
+</html>
+
