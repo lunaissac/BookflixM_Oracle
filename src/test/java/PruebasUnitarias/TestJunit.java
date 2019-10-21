@@ -54,7 +54,7 @@ public class TestJunit {
             assertEquals(valorEsperado, conectado);
         }
     }
-    
+
     @Test(expected = Exception.class)
     public void RetornarException() throws Exception {
         AutorC object = new AutorC();
@@ -64,14 +64,27 @@ public class TestJunit {
     @Test
     public void ClaseActivo() throws Exception {
         AutorC object = new AutorC();
-        assertNotNull("Esta class no retorna valor",object);
+        assertNotNull("Esta class no retorna valor", object);
     }
 
     @Test
     public void TipoVariable() throws Exception {
         Autor object1 = new Autor();
         Categoria object2 = new Categoria();
-        assertSame("Este objeto no es igual", object1.getCODAUT(),object2.getCODCAT());
+        assertSame("Este objeto no es igual", object1.getCODAUT(), object2.getCODCAT());
+    }
+
+    @Test(timeout = 100)
+    public void ConexionBDDemora() throws Exception {
+        Conexion resultado = new Conexion();
+        int valorEsperado = 1;
+        if (resultado.conectar() != null) {
+            int conectado = 1;
+            assertEquals(valorEsperado, conectado);
+        } else if (resultado.conectar() == null) {
+            int conectado = 2;
+            assertEquals(valorEsperado, conectado);
+        }
     }
 
 }
